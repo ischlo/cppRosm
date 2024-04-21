@@ -1,7 +1,5 @@
 Ivann Schlosser
 
-    knitr::po
-
 # Description
 
 This mini-package provides a very fast, yet user-friendly way of
