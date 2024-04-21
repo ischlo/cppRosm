@@ -1,5 +1,7 @@
 Ivann Schlosser
 
+    knitr::po
+
 # Description
 
 This mini-package provides a very fast, yet user-friendly way of
@@ -61,6 +63,7 @@ Next, install the package itself from github:
 ``` r
 # remotes::install_github('ischlo/cppRnet')
 # devtools::install_github('ischlo/cppRnet')
+# pak::pak("ischlo/cppRnet")
 ```
 
 The package will detect the presence of the library and notify you if it
@@ -71,7 +74,8 @@ to download a [geofabrick](https://download.geofabrik.de) extract.
 
 ## Example
 
-Once the package is inst
+Once the package and dependencies are installed, the workflow is the
+following:
 
 ``` r
 library(cppRnet)
