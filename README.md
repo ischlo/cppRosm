@@ -1,7 +1,5 @@
 Ivann Schlosser
 
-    knitr::po
-
 # Description
 
 This mini-package provides a very fast, yet user-friendly way of
@@ -83,6 +81,14 @@ library(cppRnet)
 
 file <- 'data/map.osm' # path to a local file 
 cppRnet::extract_graph(file)
+
+# .... 
+
+nodes <- data.table::fread('nodes.csv')
+segments <- data.table::fread('road_segments.csv')
+
+head(nodes)
+head(segments)
 ```
 
 At the end of the execution of this code, you should find the two files

@@ -1,3 +1,2 @@
 PKG_CPPFLAGS = -I/opt/homebrew/Cellar/libosmium/2.20.0/libexec/include -I/opt/homebrew/Cellar/libosmium/2.20.0/include
 PKG_LIBS = -L/opt/homebrew/Cellar/libosmium/2.20.0 -lexpat -pthread -lz
-
