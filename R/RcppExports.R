@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 cpp_extract_graph <- function(file) {
-    .Call('_cppRnet_cpp_extract_graph', PACKAGE = 'cppRnet', file)
+    .Call(`_cppRnet_cpp_extract_graph`, file)
 }
 

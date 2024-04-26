@@ -7,12 +7,14 @@
 #'
 #'@param filename a local osm extract file with .osm or .osm.pbf extension.
 #'
+#' local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
 #'
+#' cppRnet::extract_graph(local_osm_filename)
 #'
 #'@export
 extract_graph <- function(filename){
   
-  assert_osmium_is_installed()
+  assert_tool_is_installed('osmium')
   
   f_names <- c('nodes.csv','road_segments.csv')
   

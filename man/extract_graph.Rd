@@ -7,7 +7,11 @@
 extract_graph(filename)
 }
 \arguments{
-\item{filename}{a local osm extract file with .osm or .osm.pbf extension.}
+\item{filename}{a local osm extract file with .osm or .osm.pbf extension.
+
+local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
+
+cppRnet::extract_graph(local_osm_filename)}
 }
 \description{
 This function helps extract a road network graph in a simple and light weight format.

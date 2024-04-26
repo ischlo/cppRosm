@@ -12,7 +12,9 @@ RoxygenNote: 7.2.3
 LinkingTo: 
     Rcpp
 Imports: 
+    cli,
     data.table,
+    glue,
     processx,
     Rcpp
 URL: https://github.com/ischlo/cppRnet
