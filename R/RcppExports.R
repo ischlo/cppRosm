@@ -5,3 +5,7 @@ cpp_extract_graph <- function(file) {
     .Call(`_cppRnet_cpp_extract_graph`, file)
 }
 
+cpp_extract_data <- function(file) {
+    .Call(`_cppRnet_cpp_extract_data`, file)
+}
+

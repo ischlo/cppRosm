@@ -56,11 +56,9 @@ public:
         
         p1=geom::Coordinates(from_node_id.location());
         p2=geom::Coordinates(to_node_id.location());
-        // const auto length = calculate_segment_length(nodes);
-        // Write segment data to CSV
-        segment_csv << from_node_id.ref() << "," << to_node_id.ref() << "," << osmium::geom::haversine::distance(p1,p2) << "," << highway << "\n"; // << length  figure out the optimal way to calculate the length and then add
         
-        // node_set.clear();
+        // Write segment data to CSV
+        segment_csv << from_node_id.ref() << "," << to_node_id.ref() << "," << osmium::geom::haversine::distance(p1,p2) << "," << highway << "\n"; // << length  figure out the optimal way to calculate the length and then ad
         
       }
       
@@ -71,24 +69,143 @@ public:
     }
   };
   
-  // void init_stream(){
-  //     segment_csv << "from," << "to," << "length," << "highway" << "\n";
-  //     node_csv << "id," << "lon," << "lat" << "\n"; 
-  // }
-  
 private:
-  // double calculate_segment_length(const WayNodeList& nodes) {
-  //     double length = 0.0;
-  //     for (std::size_t i = 1; i < nodes.size(); ++i) {
-  //         length += nodes[i - 1].location().distance(nodes[i].location());
-  //     }
-  //     return length;
-  // }
+  
+  // replace this with provate Dataframes that store all the data and just return it into R ?
+  // optionnaly exporting them from the R function. 
+  
   std::ofstream segment_csv{"road_segments.csv"};
   
   std::ofstream node_csv{"nodes.csv"};
   
+};
+
+
+class general_extractor : public osmium::handler::Handler{
+public:
   
+  general_extractor(){
+    
+  }
+  
+  void node(const osmium::Node& node){
+    
+    main_key.clear();
+    main_val.clear();
+    id_indiv.clear();
+    
+    set_main_key(node.tags());
+    
+    if(main_key.empty()){
+      return;  
+    } else {
+      // main_val = node.tags().get_value_by_key(main_key);
+      id_indiv=std::to_string(node.id());
+      attr = get_attr_list(node.tags());
+      
+      // finnaly get the coordinates and put it all into the Rcpp::vectors. 
+      id.push_back(id_indiv);
+      
+      main_keys.push_back(main_key);
+      
+      main_values.push_back(main_val);
+  
+      attrs.push_back(attr);
+      
+      x.push_back(node.location().lon());
+      
+      y.push_back(node.location().lat());
+      
+    }
+    
+  }
+  
+  Rcpp::List export_data(){
+    return Rcpp::List::create(Rcpp::Named("id")=Rcpp::clone(id)
+                                     ,Rcpp::Named("key")=Rcpp::clone(main_keys)
+                                     ,Rcpp::Named("value")=Rcpp::clone(main_values)
+                                     ,Rcpp::Named("lon")=Rcpp::clone(x)
+                                     ,Rcpp::Named("lat")=Rcpp::clone(y)
+                                     ,Rcpp::Named("attrs")=Rcpp::clone(attrs)
+    );
+  }
+    
+private:
+  
+  Rcpp::CharacterVector first_level_keys = {"aerialway"
+    ,"aeroway"
+    ,"barrier"
+    ,"boundary"
+    ,"building"
+    ,"craft"
+    ,"emergency"
+    ,"geological"
+    ,"healthcare"
+    // ,"highway" this is treated by a separate function
+    ,"historic"
+    ,"landuse"
+    ,"leisure"
+    ,"man_made"
+    ,"military"
+    ,"natural"
+    ,"office"
+    ,"place"
+    ,"power"
+    ,"public_transport"
+    ,"railway"
+    ,"shop"
+    ,"telecom"
+    ,"tourism"
+    ,"waterway"
+    };
+  
+  // individual values to iterate.
+  
+  std::string main_key,main_val,id_indiv;
+  
+  Rcpp::List attr;
+  
+  // accumulated vector values 
+  
+  Rcpp::CharacterVector id, main_keys, main_values;
+  
+  Rcpp::NumericVector x,y;
+  
+  Rcpp::List attrs;
+  
+  // private methods
+  
+  Rcpp::List get_attr_list(const TagList& tagl){
+    // iterate other all the tags that don't correspond tot he main key and 
+    // add them to the attr list as 'key'='value' named list element.
+    Rcpp::List res;
+    
+    for(const auto& tag: tagl){
+      if(tag.key()!=main_key){
+        // here append to the res list all the other tags, with key to name and value to value. 
+        res[tag.key()]=tag.value();
+      }
+    }
+    return res;
+  };
+  
+  void set_main_key(const osmium::TagList& tags){
+    // std::string main_key;
+    // std::string main_val;
+    // char *res='none';
+
+    for (const auto& key: first_level_keys){
+      if(tags.has_key(key)){
+
+        main_key=key;
+        main_val= tags.get_value_by_key(key);
+      }
+    }
+
+    // find the right return type to keep it simple.
+    return;
+  }
+
 };
 
 
@@ -117,28 +234,25 @@ int cpp_extract_graph(const std::string& file){
   return 1;
 }
 
-// 
-// int main(int argc, char* argv[]) {
-//   if (argc != 2) {
-//     std::cerr << "Usage: " << argv[0] << " <input-file>" << std::endl;
-//     exit(1);
-//   }
-//   
-//   // The index to hold node locations.
-//   index_type index;
-//   
-//   // The location handler will add the node locations to the index and then
-//   // to the ways
-//   location_handler_type location_handler{index};
-//   
-//   const std::string input_file(argv[1]);
-//   
-//   Reader input_file_reader(input_file);
-//   
-//   RoadSegmentExtractor handler;
-//   
-//   // Apply the handler to the input file
-//   apply(input_file_reader, location_handler, handler);
-//   
-//   return 0;
-// }
+// @export
+// [[Rcpp::export]]
+Rcpp::List cpp_extract_data(const std::string& file){
+  
+  // The index to hold node locations.
+  // index_type index;
+  
+  // The location handler will add the node locations to the index and then
+  // to the ways
+  // location_handler_type location_handler{index};
+  
+  const std::string input_file(file);
+  
+  Reader input_file_reader(input_file);
+  
+  general_extractor general_handler;
+  
+  // Apply the handler to the input file
+  apply(input_file_reader, general_handler);
+  
+  return(general_handler.export_data());
+}

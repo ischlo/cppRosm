@@ -28,3 +28,30 @@ extract_graph <- function(filename){
 
 
 
+#'@title Extracting data from raw osm.
+#'@name extract_data
+#'@description
+#'
+#'Getting data from raw osm files.
+#'
+#'@param filename a local osm extract file with .osm or .osm.pbf extension.
+#'
+#' local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
+#'
+#' cppRnet::extract_data(local_osm_filename)
+#'
+#'@export
+extract_data <- function(filename){
+  
+  assert_tool_is_installed('osmium')
+  
+  
+  
+  data <- cpp_extract_data(filename)
+  
+  if (all(sapply(data,length)==length(data[[1]])
+          ,length(data[[1]]>0))){
+    return(data.table::as.data.table(data))
+  }
+  cli::cli_alert_danger('Could not extract consistent data, please check source data.')
+}

@@ -1,10 +1,10 @@
 Package: cppRnet
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Fast en efficient OSM data in R
+Version: 0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+    person("Ivann", "Schlosser", , "schlosserivann@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: This package provides a set of R function for working with OpenStreetMap extract data through the libosmium library in C++.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

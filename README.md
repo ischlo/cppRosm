@@ -102,7 +102,8 @@ following:
 library(cppRnet)
 ## basic example code
 
-file <- 'data/map.osm' # path to a local file 
+file <- system.file(package = 'cppRnet','extdata',"map.osm") # path to a local file 
+
 cppRnet::extract_graph(file)
 
 # .... 
