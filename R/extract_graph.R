@@ -32,13 +32,16 @@ extract_graph <- function(filename){
 #'@name extract_data
 #'@description
 #'
-#'Getting data from raw osm files.
+#'Getting non-network data from raw osm files.
 #'
 #'@param filename a local osm extract file with .osm or .osm.pbf extension.
 #'
 #' local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
 #'
-#' cppRnet::extract_data(local_osm_filename)
+#' data <- cppRnet::extract_data(local_osm_filename)
+#' 
+#' summary(data)
+#'
 #'
 #'@export
 extract_data <- function(filename){
