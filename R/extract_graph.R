@@ -22,10 +22,13 @@ extract_graph <- function(filename){
   
   cat('Files will be written to: ',getwd(),'\n')
   
+  # graph_data <- cpp_extract_graph(filename)
+  # graph_data <- lapply(graph_data,data.table::as.data.table)
+  # graph_data$nodes <- graph_data$nodes[!duplicated(graph_data$nodes$id),]
+  # return(graph_data)
+  
   cpp_extract_graph(filename)
 }
-
-
 
 
 #'@title Extracting data from raw osm.
@@ -44,13 +47,46 @@ extract_graph <- function(filename){
 #'
 #'
 #'@export
-extract_data <- function(filename){
+extract_data <- function(filename, main_keys = NULL){
   
   assert_tool_is_installed('osmium')
   
+  main_first_level <- c(
+    # "aerialway" 
+    # ,"aeroway"
+    "amenity"
+    # ,"barrier"
+    # ,"boundary"
+    # ,"building" # is too generic
+    ,"craft"
+    # ,"emergency" # inconsistent data here
+    # ,"geological" # too scarce
+    ,"healthcare" # more consistent compared to emergency
+    # ,"highway" this is treated by a separate function
+    ,"historic"
+    # ,"landuse" # generic as well
+    ,"leisure" # overlaps with sports
+    # ,"military" # scarce
+    # ,"natural" # 
+    ,"office" # a bit of mix between amenity, shop
+    ,"power" # 
+    # ,"railway" # add option to export with highways
+    ,"shop"
+    # ,"telecom" # scarce
+    ,"tourism"
+    # ,"waterway" # very specific
+  )
   
+  if(is.null(main_keys)){
+    
+    cli::cli_alert('Using main keys `amenity`,`shop`,`tourism`.')
+    
+    data <- cpp_extract_data(filename,main_sel=c("amenity","shop","tourism"))  
   
-  data <- cpp_extract_data(filename)
+  } else {
+    stopifnot(all(main_keys %in% main_first_level))
+    
+  }
   
   if (all(sapply(data,length)==length(data[[1]])
           ,length(data[[1]]>0))){

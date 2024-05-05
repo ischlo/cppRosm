@@ -24,3 +24,4 @@ install: build
 
 clean:
 	@rm -rf $(PKGNAME)_$(PKGVERS).tar.gz $(PKGNAME).Rcheck
+

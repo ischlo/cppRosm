@@ -22,20 +22,21 @@ BEGIN_RCPP
 END_RCPP
 }
 // cpp_extract_data
-Rcpp::List cpp_extract_data(const std::string& file);
-RcppExport SEXP _cppRnet_cpp_extract_data(SEXP fileSEXP) {
+Rcpp::List cpp_extract_data(const std::string& file, Rcpp::CharacterVector main_sel);
+RcppExport SEXP _cppRnet_cpp_extract_data(SEXP fileSEXP, SEXP main_selSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type file(fileSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_extract_data(file));
+    Rcpp::traits::input_parameter< Rcpp::CharacterVector >::type main_sel(main_selSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_extract_data(file, main_sel));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_cppRnet_cpp_extract_graph", (DL_FUNC) &_cppRnet_cpp_extract_graph, 1},
-    {"_cppRnet_cpp_extract_data", (DL_FUNC) &_cppRnet_cpp_extract_data, 1},
+    {"_cppRnet_cpp_extract_data", (DL_FUNC) &_cppRnet_cpp_extract_data, 2},
     {NULL, NULL, 0}
 };
 

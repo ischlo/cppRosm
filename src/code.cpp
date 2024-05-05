@@ -31,13 +31,14 @@ class RoadSegmentExtractor : public osmium::handler::Handler {
 public:
   
   RoadSegmentExtractor(){
-    segment_csv << "from," << "to," << "length," << "highway" << "\n";
-    node_csv << "id," << "lon," << "lat"<<"\n"; 
+    // segment_csv << "from," << "to," << "length," << "highway" << "\n";
+    // node_csv << "id," << "lon," << "lat"<<"\n"; 
   };
   
   void way(const osmium::Way& way) {
     // Check if the way represents a road segment
     if (way.tags().has_key("highway")) {
+      
       // Extract nodes of the road segment
       const auto& nodes = way.nodes();
       if (nodes.size() < 2) return; // Skip if there are fewer than 2 nodes
@@ -49,7 +50,9 @@ public:
       osmium::NodeRef from_node_id,to_node_id;
       osmium::geom::Coordinates p1,p2;
       
-      for(long unsigned int i(0); i<nodes.size()-1; ++i){
+      double len;
+      
+      for(long unsigned int i(0); i < nodes.size()-1; ++i){
         // Extract from/to node ids and calculate segment length
         from_node_id = nodes[i];
         to_node_id = nodes[i+1];
@@ -57,25 +60,87 @@ public:
         p1=geom::Coordinates(from_node_id.location());
         p2=geom::Coordinates(to_node_id.location());
         
-        // Write segment data to CSV
-        segment_csv << from_node_id.ref() << "," << to_node_id.ref() << "," << osmium::geom::haversine::distance(p1,p2) << "," << highway << "\n"; // << length  figure out the optimal way to calculate the length and then ad
+        len = osmium::geom::haversine::distance(p1,p2);
         
+        // Write segment data to CSV
+        segment_csv << from_node_id.ref() << "," << to_node_id.ref() << "," << len << "," << highway << "\n"; // << length  figure out the optimal way to calculate the length and then ad
+        
+        // from.push_back(std::to_string(
+        //     from_node_id.ref()
+        //                  ));
+        // to.push_back(std::to_string(
+        //     to_node_id.ref()
+        //                ));
+        // length.push_back(
+        //   len
+        //   );
+        // highway_key.push_back(
+        //   highway
+        //   );
+        // 
       }
       
       // Write nodes to CSV
       for (const auto& node : nodes) {
+        
         node_csv << node.ref() << "," << node.location().lon() << "," << node.location().lat() << "\n";
+        
+        // id.push_back(std::to_string(
+        //     node.ref()
+        //                ));
+        // lon.push_back(node.location().lon());
+        // lat.push_back(node.location().lat());
+        
       }
     }
   };
+  
+  
+  // Rcpp::DataFrame export_segments(){
+  // 
+  //   return Rcpp::DataFrame::create(
+  //     Rcpp::Named("from")=Rcpp::clone(from)
+  //   ,Rcpp::Named("to")=Rcpp::clone(to)
+  //   ,Rcpp::Named("length")=Rcpp::clone(length)
+  //   ,Rcpp::Named("highway")=Rcpp::clone(highway_key)
+  //   );
+  // 
+  // }
+  // 
+  // Rcpp::DataFrame export_nodes(){
+  //  
+  //   return Rcpp::DataFrame::create(
+  //     Rcpp::_["id"]=Rcpp::clone(id)
+  //   ,Rcpp::_["lon"]=Rcpp::clone(lon)
+  //   ,Rcpp::_["lat"]=Rcpp::clone(lat)
+  //   );
+  // }
+
+  // Rcpp::List export_network(){
+  //   
+  //   return Rcpp::List::create(
+  //     Rcpp::_["nodes"]=Rcpp::DataFrame::create(
+  //       Rcpp::_["id"]=Rcpp::clone(id)
+  //       ,Rcpp::_["lon"]=Rcpp::clone(lon)
+  //       ,Rcpp::_["lat"]=Rcpp::clone(lat)
+  //   )
+  //   ,Rcpp::_["segments"]=Rcpp::DataFrame::create(
+  //     Rcpp::_["from"]=Rcpp::clone(from)
+  //     ,Rcpp::_["to"]=Rcpp::clone(to)
+  //     ,Rcpp::_["length"]=Rcpp::clone(length)
+  //     ,Rcpp::_["highway"]=Rcpp::clone(highway_key)
+  //   ));
+  // }
   
 private:
   
   // replace this with provate Dataframes that store all the data and just return it into R ?
   // optionnaly exporting them from the R function. 
   
-  std::ofstream segment_csv{"road_segments.csv"};
+  // Rcpp::CharacterVector from, to, id, highway_key;
+  // Rcpp::NumericVector lat,lon,length;
   
+  std::ofstream segment_csv{"road_segments.csv"};
   std::ofstream node_csv{"nodes.csv"};
   
 };
@@ -84,8 +149,8 @@ private:
 class general_extractor : public osmium::handler::Handler{
 public:
   
-  general_extractor(){
-    
+  general_extractor(Rcpp::CharacterVector main_sel){
+    first_level_keys = main_sel;
   }
   
   void node(const osmium::Node& node){
@@ -132,32 +197,7 @@ public:
     
 private:
   
-  Rcpp::CharacterVector first_level_keys = {"aerialway"
-    ,"aeroway"
-    ,"barrier"
-    ,"boundary"
-    ,"building"
-    ,"craft"
-    ,"emergency"
-    ,"geological"
-    ,"healthcare"
-    // ,"highway" this is treated by a separate function
-    ,"historic"
-    ,"landuse"
-    ,"leisure"
-    ,"man_made"
-    ,"military"
-    ,"natural"
-    ,"office"
-    ,"place"
-    ,"power"
-    ,"public_transport"
-    ,"railway"
-    ,"shop"
-    ,"telecom"
-    ,"tourism"
-    ,"waterway"
-    };
+  Rcpp::CharacterVector first_level_keys;
   
   // individual values to iterate.
   
@@ -190,6 +230,7 @@ private:
   };
   
   void set_main_key(const osmium::TagList& tags){
+    
     // std::string main_key;
     // std::string main_val;
     // char *res='none';
@@ -212,6 +253,8 @@ private:
 //@export
 // [[Rcpp::export]]
 int cpp_extract_graph(const std::string& file){
+  
+  // Rcpp::List 
   
   // , bool key_vals=true ; when more parameters will be implemented.
   
@@ -236,7 +279,7 @@ int cpp_extract_graph(const std::string& file){
 
 // @export
 // [[Rcpp::export]]
-Rcpp::List cpp_extract_data(const std::string& file){
+Rcpp::List cpp_extract_data(const std::string& file,Rcpp::CharacterVector main_sel){
   
   // The index to hold node locations.
   // index_type index;
@@ -249,7 +292,7 @@ Rcpp::List cpp_extract_data(const std::string& file){
   
   Reader input_file_reader(input_file);
   
-  general_extractor general_handler;
+  general_extractor general_handler(main_sel);
   
   // Apply the handler to the input file
   apply(input_file_reader, general_handler);
