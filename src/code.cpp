@@ -27,6 +27,19 @@ using namespace osmium::osm_entity_bits;
 using namespace Rcpp;
 
 
+/////////// 
+
+
+double numeric_vector_mean(Rcpp::NumericVector vec){
+  if (vec.size()==0) return 0;
+  double total = 0;
+  for(Rcpp::NumericVector::iterator i = vec.begin(); i != vec.end(); ++i) {
+    total += *i;
+  }
+  return total/vec.size();
+}
+
+
 class RoadSegmentExtractor : public osmium::handler::Handler {
 public:
   
@@ -185,6 +198,52 @@ public:
     
   }
   
+  void way(const osmium::Way& way){
+    
+    // only polygons are exported here
+    // , so we check for a main key, then 
+    // check that the way is closed -> last node is same as first
+    // and if so, we add the node list with coordinates in the attrs values as a data frame (list ? ). 
+    // in the package, there can be a function like : reconstruct_geom that will take all these ways and make them into polygons. 
+    // but we will also find the centroid of the way and put it into the x,y variables.
+    
+    main_key.clear();
+    main_val.clear();
+    id_indiv.clear();
+    
+    if(!way.is_closed()) return;
+    
+    set_main_key(way.tags());
+    
+    if(main_key.empty()){
+      return;  
+    } else {
+      // main_val = way.tags().get_value_by_key(main_key);
+      id_indiv=std::to_string(way.id());
+      attr = get_attr_list(way.tags());
+      
+      Rcpp::DataFrame nodes = accumulate_nodes(way.nodes());
+      
+      attr["nodes"] = nodes;
+      
+      // finnaly get the coordinates and put it all into the Rcpp::vectors. 
+      id.push_back(id_indiv);
+      
+      main_keys.push_back(main_key);
+      
+      main_values.push_back(main_val);
+      
+      attrs.push_back(attr);
+      
+      x.push_back(numeric_vector_mean(nodes["x"]));
+    
+      y.push_back(numeric_vector_mean(nodes["y"]));
+      
+    }
+    
+  }
+  
+  
   Rcpp::List export_data(){
     return Rcpp::List::create(Rcpp::Named("id")=Rcpp::clone(id)
                                      ,Rcpp::Named("key")=Rcpp::clone(main_keys)
@@ -230,10 +289,6 @@ private:
   };
   
   void set_main_key(const osmium::TagList& tags){
-    
-    // std::string main_key;
-    // std::string main_val;
-    // char *res='none';
 
     for (const auto& key: first_level_keys){
       if(tags.has_key(key)){
@@ -245,6 +300,24 @@ private:
 
     // find the right return type to keep it simple.
     return;
+  }
+  
+  Rcpp::DataFrame accumulate_nodes(const WayNodeList& way_nodes){
+    
+    Rcpp::CharacterVector node_id;
+    Rcpp::NumericVector node_x,node_y;
+    
+    for (const osmium::NodeRef& nr : way_nodes) {
+      node_id.push_back(std::to_string(nr.ref()));
+      node_x.push_back(nr.lon());
+      node_y.push_back(nr.lat());
+    }
+    
+    return Rcpp::DataFrame::create(Rcpp::_["node_id"] = node_id
+                                     ,Rcpp::_["x"] = node_x
+                                     ,Rcpp::_["y"] = node_y
+                                     );
+    
   }
 
 };
@@ -282,11 +355,11 @@ int cpp_extract_graph(const std::string& file){
 Rcpp::List cpp_extract_data(const std::string& file,Rcpp::CharacterVector main_sel){
   
   // The index to hold node locations.
-  // index_type index;
+  index_type index;
   
   // The location handler will add the node locations to the index and then
   // to the ways
-  // location_handler_type location_handler{index};
+  location_handler_type location_handler{index};
   
   const std::string input_file(file);
   
@@ -295,7 +368,7 @@ Rcpp::List cpp_extract_data(const std::string& file,Rcpp::CharacterVector main_s
   general_extractor general_handler(main_sel);
   
   // Apply the handler to the input file
-  apply(input_file_reader, general_handler);
+  apply(input_file_reader,location_handler, general_handler);
   
   return(general_handler.export_data());
 }
