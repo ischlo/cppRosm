@@ -6,6 +6,7 @@
 #'   otherwise.
 #'
 #' @keywords internal
+#' @noRd
 assert_tool_is_installed <- function(tool) {
   is_installed <- tryCatch(
     processx::run(tool, "--version"),

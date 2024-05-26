@@ -4,15 +4,24 @@
 \alias{extract_data}
 \title{Extracting data from raw osm.}
 \usage{
-extract_data(filename)
+extract_data(filename, main_keys = NULL)
 }
 \arguments{
-\item{filename}{a local osm extract file with .osm or .osm.pbf extension.
+\item{filename}{a local osm extract file with .osm or .osm.pbf extension.}
 
-local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
-
-cppRnet::extract_data(local_osm_filename)}
+\item{main_keys}{a vector containing main keys to extract the values for. Check osm map features or vignette for a full detail.}
+}
+\value{
+a data table with several main columns, including one called \code{attrs} which contains lists
+with named key=value pairs of the secondary osm tags.
 }
 \description{
-Getting data from raw osm files.
+Getting non-network data from raw osm files.
+}
+\examples{
+local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
+
+data <- cppRnet::extract_data(local_osm_filename)
+head(data)
+head(data$attrs)
 }

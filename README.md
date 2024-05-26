@@ -1,60 +1,14 @@
 Ivann Schlosser
 
-# Description
+## Introduction
 
-This mini-package provides a very fast, yet user-friendly way of
-exporting large road network data in a graph-like format. It uses the
-[**libosmium**](https://osmcode.org/libosmium/index.html) library in the
-background and proposes a simple R function to extract the road graph
-from a `.osm`, `.osm.pbf` extract file with OSM data.
-
-## Background
-
-While there are already great packages for working with OSM data, I
-found myself struggling when the networks were getting big (region,
-country scale…). Usually, one would have to use command line tools and
-export data to a database before actually being able to use it.
-Additionally, for certain use cases, the geometry and most of the tags
-asociated to an OSM feature are not essential, and therefore including
-them into files ultimately comes at a great cost. So this package solves
-one specific use case of building a graph out of OSM road network data
-with almost no size limit.
-
-While the graph files produced can be used in any workflow, the intended
-use case is with the
-[**cppRouting**](https://github.com/vlarmet/cppRouting) package, which
-is outstanding for working with large scale road networks right from
-your R environment. Additionally, pre-processing of files can done with
-the `rosmium` package. For example to select a more specific bounding
-box in your data. One condition here is required, is that you export
-features in a complete way. Missing nodes can caue problems in the
-current version of the package.
-
-# cppRnet
-
-Currently, this package proposes a single function `extract_graph` that
-accepts the path to a raw OSM extract file, and writes into the working
-directory of the project 2 data sets: nodes.csv, road_segments.csv.
-
-## Output
-
-**nodes.csv** - contains 3 columns: id, lon, lat with respectively the
-OSM id of a node, its longitude and latitude.
-
-| id        | lon     | lat     |
-|-----------|---------|---------|
-| character | numeric | numeric |
-
-**road_segments.csv** - contains at least 3 columns, but can contain
-more. The minimum expected columns are from, to, length. The first 2
-columns contain node ids.
-
-| from      | to        | length  | highway            |
-|-----------|-----------|---------|--------------------|
-| character | character | numeric | character (factor) |
-
-In some cases, node ids can be cast to long integers, but this is not a
-recommended.
+This package uses the **libosmium** library in the background and
+porposes an opinionated way of interacting with raw OSM data. It is
+opinionated, because a number of assumptions are made, based on a long
+and sometimes frustrating experience of working with OSM data in R or
+python projects. The assumptions and the porposed *data schema* will be
+covered in a separate vignette. This part will mainly cover the setup of
+the package.
 
 ## Setup dependencies
 
@@ -89,48 +43,32 @@ Next, install the package itself from github:
 
 The package will detect the presence of the library and notify you if it
 doesn’t see it. Once the library is installed, you will need a OSM
-extract file, you can get one by manulally exporting a selected area
-from [OSM](openstreetmap.org), or for bigger areas, the best approach is
-to download a [geofabrick](https://download.geofabrik.de) extract.
-
-## Example
-
-Once the package and dependencies are installed, the workflow is the
-following:
-
-``` r
-library(cppRnet)
-## basic example code
-
-file <- system.file(package = 'cppRnet','extdata',"map.osm") # path to a local file 
-
-cppRnet::extract_graph(file)
-
-# .... 
-
-nodes <- data.table::fread('nodes.csv')
-segments <- data.table::fread('road_segments.csv')
-
-head(nodes)
-head(segments)
-```
-
-At the end of the execution of this code, you should find the two files
-in your working directory (if you don’t know which one is it, run
-`getwd()`).
+extract file, you can get one by manually exporting a selected area from
+[OSM](openstreetmap.org), or for bigger areas, the best approach is to
+download a [geofabrick](https://download.geofabrik.de) extract.
 
 ## Notes
 
 This is a early stage development package that could develop more
 functionalities for integrating the extremely performant **osmium**
-library with a user friendly R workflow. The choice has been made to
-first export the data to *.csv* files and only after reading it into R.
-This is to avoid potentially creating files that are to big to be
-handled by the R environment, while still extracting the data.
+library with a user friendly R workflow. The choice has been made for
+graph data, to first export it to *.csv* files and only after reading it
+into R. This is to avoid potentially creating files that are to big to
+be handled by the R environment, while still extracting the data.
+However, this process can fail sometimes, resulting in loss of unsaved
+data in the active R environment. Best practices and the optimal
+workflows are covered in a separate vignette.
 
 ## References
 
 There are a few great packages for working with OSM data, they all
 provide a wide set of functionalities. If the size of your data is not
 excessive, like small city-village scale, `osmdata` might be your tool
-of choice in R.
+of choice in R. If the data gets bigger, `osmextract` could be the right
+choice. This package aims to be both user friendly and flexible, but
+also high performing.
+
+| language | package                                                                                                                                               |
+|----------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
+| R        | [`osmdata`](https://docs.ropensci.org/osmdata/),[`osmextract`](https://docs.ropensci.org/osmextract/)                                                 |
+| python   | [`pydriosm`](https://pypi.org/project/pydriosm/), [`pyrosm`](https://pyrosm.readthedocs.io/en/latest/#), [`osmium`](https://pypi.org/project/osmium/) |

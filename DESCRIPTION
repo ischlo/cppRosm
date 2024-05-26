@@ -4,18 +4,26 @@ Version: 0.0.9000
 Authors@R: 
     person("Ivann", "Schlosser", , "schlosserivann@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: This package provides a set of R function for working with OpenStreetMap extract data through the libosmium library in C++.
+Description: This package provides a set of R function for working with
+    OpenStreetMap extract data through the libosmium library in C++.
 License: MIT + file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
-LinkingTo: 
-    Rcpp
+URL: https://github.com/ischlo/cppRnet
+BugReports: https://github.com/ischlo/cppRnet/issues
 Imports: 
     cli,
     data.table,
     glue,
+    parallel,
     processx,
+    Rcpp,
+    sf,
+    tmap
+LinkingTo: 
     Rcpp
-URL: https://github.com/ischlo/cppRnet
-BugReports: https://github.com/ischlo/cppRnet/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

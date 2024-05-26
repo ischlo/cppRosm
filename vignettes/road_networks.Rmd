@@ -1,0 +1,67 @@
+---
+title: "Extracting road networks"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extracting road networks}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+# Description
+
+This mini-package provides a very fast, yet user-friendly way of exporting large road network data in a graph-like format. It uses the [**libosmium**](https://osmcode.org/libosmium/index.html) library in the background and proposes a simple R function to extract the road graph from a `.osm`, `.osm.pbf` extract file with OSM data.
+
+## Background
+
+While there are already great packages for working with OSM data, I found myself struggling when the networks were getting big (region, country scale...). Usually, one would have to use command line tools and export data to a database before actually being able to use it. Additionally, for certain use cases, the geometry and most of the tags associated to an OSM feature are not essential, and therefore including them into files ultimately comes at a great cost. So this package solves one specific use case of building a graph out of OSM road network data with almost no size limit.
+
+While the graph files produced can be used in any workflow, the intended use case is with the [**cppRouting**](https://github.com/vlarmet/cppRouting) package, which is outstanding for working with large scale road networks right from your R environment.
+Additionally, pre-processing of files can done with the `rosmium` package. For example to select a more specific bounding box in your data. One condition here is required, is that you export features in a complete way. Missing nodes can cause problems in the current version of the package.
+
+# cppRnet
+
+The function `extract_graph` accepts the path to a raw OSM extract file, and writes into the working directory of the project 2 data sets: nodes.csv, road_segments.csv.
+
+## Output
+
+**nodes.csv** - contains 3 columns: id, lon, lat with respectively the OSM id of a node, its longitude and latitude.
+ 
+
+**road_segments.csv** - contains at least 3 columns, but can contain more. The minimum expected columns are from, to, length. The first 2 columns contain node ids.
+
+| from      | to        | length  | highway            |
+|-----------|-----------|---------|--------------------|
+| character | character | numeric | character (factor) |
+
+In some cases, node ids can be cast to long integers, but this is not a recommended.
+
+## Example workflow
+
+Once the package and dependencies are installed, the workflow is the following:
+
+```{r example, echo=TRUE,eval=FALSE,include=TRUE}
+library(cppRnet)
+## basic example code
+
+file <- system.file(package = 'cppRnet','extdata',"map.osm") # path to a local file 
+
+cppRnet::extract_graph(file)
+
+# .... 
+
+nodes <- data.table::fread('nodes.csv')
+segments <- data.table::fread('road_segments.csv')
+
+head(nodes)
+head(segments)
+
+#### from here, use your preferred network package to build the graph.
+
+# .....
+
+```
+
+At the end of the execution of this code, you should find the two files in your working directory (if you don't know which one is it, run `getwd()`).
+
+

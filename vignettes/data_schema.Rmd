@@ -1,0 +1,142 @@
+---
+title: "An opinionated way of working with OSM data."
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An opinionated way of working with OSM data.}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+Anyone who has used OpenStreetMap (OSM) data in R or python might agree that the tagging system, while it provides great flexibility and extensive classification options, is sometimes a bit challenging to work with. This vignettes will explain the approach to the tagging system that aims to make it easy to interact with features, their associated tags and their geometries. The main ambition being providing an easy access to large OSM data sets.
+
+## OSM tags
+
+A tag is a tuple of values, the first element is called a $key$, while the second is the corresponding $value$. Together, they form a tag which is written out as a $key=value$ form. The key corresponds to a broad classification, while the value is specific. For example $amenity=restaurant$. The $key$ is $amenity$, while the $value$ is $restaurant$. Generally, there is a few values corresponding to a key. 
+ - Every OSM feature consists of a set of nodes and a set of tags.
+ The nodes are geographically referenced, which means they have associated coordinates, allowing to reconstruct the geometry of a feature. A detailed list of possible value and recommendations are avaialbe in the following article : [OSM map features](https://wiki.openstreetmap.org/wiki/Map_features#Primary_features).
+
+## Different data types
+
+To further develop the appropriate tools to work with OSM data, it is important to have a look at what kind of data is actually there and in what format it is most useful. Mainly two types of data can be divided:
+
+### Network
+
+First, one main use of OSM data is to obtain connected and routable road networks, an easy to use function called `extrat_graph` will do that. See the corresponding vignette for details.
+The road network data is grouped under the $highway$ key. All categories of roads (residential,motorway,pedestrian etc...) will be values of this key.
+
+### Non network
+
+The rest of the data in OSM is usually represented by either a point or a polygon with its set of associated tags. There can be multiple tags associated to a feature, and one might be interested in the values of a specific one. There is, however, an intrinsic hierarchy in the tags, which can be useful in extracting data in a user friendly and exploitable way.
+
+## Tagging hierarchy
+ 
+This package proposes a 2 level hierarchy of tags, which helps extract the data into large data.tables or data.frames in which the high level tags are added as column variables, while secondary tags are grouped into named lists and added in a separate column called `attrs`. The main consideration is that there are tags that add up information to each other, being complimentary in that sense for a feature, these are grouped in the 2nd level in this schema. While there are also tags that are mutually exclusive, for example a tag with an $amenity$ key will generally not have a $healthcare$ key since these are different types of features. While both of them can have the same 2nd level keys such as the address, name, phone number or any specific information.
+
+### 1st level
+
+The first level corresponds to the *main* tags. Those are taken from the following list:
+
+```{r}
+
+ main_first_level <- c(
+    "amenity"
+    ,"craft"
+    ,"healthcare"
+    ,"historic"
+    ,"sport"
+    ,"natural"
+    ,"shop"
+    ,"tourism"
+  )
+
+```
+
+Everything else is left to the second level of tags, for example: 
+$addr:street$ is a specific key for the address of a feature. It is generally scarce.
+$leisure$ is a key that overlaps a lot with the $sport$ key. It generally contains more specific information on the type of sport.
+
+## Example
+
+By default, only tags with keys $amenity,shop,tourism$ will be extracted.
+
+```{r}
+
+test_file <- system.file(package = 'cppRnet','extdata','map.osm')
+
+data <- cppRnet::extract_data(test_file)
+
+head(data)
+```
+The geometry is simplified to the centroid, for which the coordinates are provided in the lon,lat columns of the data table. A function allowing to reconstruct the full geometry is provided, but since it is not necessarily always usefull to have it, it is ommited in a first extraction. The nodes that constitute a full geometry, if it is more complex than a point, are added to the attrs column as a `data.frame`. These geometries are always closed, meaining they are polygons. This is meant to save memory especially for large data sets.  
+
+With this data format, we can now easily manipulate all the POIs, or select specific keys, or specific values, or both.
+
+```{r}
+
+# filer by key
+data[key=="amenity",] |> head()
+
+# filter by value
+data[value=="restaurant",] |> head()
+
+# both: use or to include specific values of different keys and keys
+data[key=="shop" | value=="restaurant",] |> head()
+
+```
+
+## Filtering 2nd level tags
+
+A function to efficiently filter the secondary tags returns a data frame, where the searched for key will be added as a column for all feature that has a non-`NA` match. Under the hood, values are matched using regular expressions, which maximises the chance of finding the desired values in sometimes complicated OSM values.
+
+```{r}
+
+data |> 
+  cppRnet::filter_sec(keys=c("cuisine","takeaway")
+                      ,cores=1) |> 
+  head()
+
+data |> 
+  cppRnet::filter_sec(keys=list("cuisine"=c("japanese","pizza"),"takeaway"=c("yes"))
+                      ,cores = 1) |> 
+  head()
+
+```
+
+## Geometries
+
+In a lot of cases, knowing the centroids of POIs is more than enough: 
+
+```{r}
+
+data |> 
+  sf::st_as_sf(coords=c("lon","lat"),crs=4326) |> 
+  tmap::qtm()
+
+```
+
+But there will be times when the original geometry might be of interest, in this case use the `construct_geom` function: 
+
+```{r}
+
+data_geom <- data |> 
+  cppRnet::construct_geom(complete = TRUE,cores = 1) |> 
+  sf::st_as_sf()
+
+tmap::qtm(data_geom)
+
+```
+
+## Alternatives
+
+- `osmdata`: while this is a great package that I have used a lot, I found it frustrating to have all the different geometries gathered into separate tables, and each table containing huge numbers of `NA` columns. The `attrs` column in a cppRnet table provides an alternative way to store all the secondary tags. Additionally, all the geometries are simplified to their centroid, but the possibility to reconstruct the original ones are provided with the `construct_geom` function.
+- `osmextract`: great for working with large OSM files. But the filtering of features remains a bit obscure in my opinion, although it seems to provide great flexibility, but requires a good knowledge of OSM internals.
+
+## Conclusion 
+
+This vignette aimed to explain the approach taken for manipulating OSM data at scale and with flexibility through a specific data table format and supporting functions. Please reach out for recommendations, feature additions etc...
+
+In another vignette, a recommended workflow will be covered, as this package was developed with a few others in mind (`rosmium`,`cppRouting` mainly) , so that network and POI analysis could be done at scale in a local setup.
+
+

@@ -7,14 +7,15 @@
 extract_graph(filename)
 }
 \arguments{
-\item{filename}{a local osm extract file with .osm or .osm.pbf extension.
-
-local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
-
-cppRnet::extract_graph(local_osm_filename)}
+\item{filename}{a local osm extract file with .osm or .osm.pbf extension.}
+}
+\value{
+this function returns the value 1 to the R environment when it's completed.
+It writes out 2 files containing nodes and segments. The files are written in the current directory and are called:
+\code{nodes.csv},\code{road_segments.csv}.
 }
 \description{
 This function helps extract a road network graph in a simple and light weight format.
-In the background, it uses the power of the osmium library in C++, and copies the data iin graph format locally as 2 .csv
+In the background, it uses the power of the osmium library in C++, and copies the data in graph format locally as 2 .csv
 files, one with nodes and their coordinates, with with segments and optional values.
 }

@@ -94,23 +94,3 @@ extract_data <- function(filename, main_keys = NULL){
   }
   cli::cli_alert_danger('Could not extract consistent data, please check source data.')
 }
-
-
-#'@title construct_geom
-#'@name construct_geom
-#'@description
-#'From a cppRnet data table, make the geometries.
-#'
-#'@param cpprnet_dt a data table obtained with cppRnet extract_data()
-#'@param complete bool. True to reconstruct Polygons, else use just points.
-#@example construct_geom(dt)
-#'@export
-construct_geom <- function(cpprnet_dt
-                           ,complete = FALSE){
-  if(complete){
-    
-  }
-}
-
-
-
