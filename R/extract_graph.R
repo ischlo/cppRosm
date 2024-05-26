@@ -2,15 +2,18 @@
 #'@name extract_graph
 #'@description
 #'This function helps extract a road network graph in a simple and light weight format.
-#'In the background, it uses the power of the osmium library in C++, and copies the data iin graph format locally as 2 .csv 
+#'In the background, it uses the power of the osmium library in C++, and copies the data in graph format locally as 2 .csv 
 #'files, one with nodes and their coordinates, with with segments and optional values. 
 #'
 #'@param filename a local osm extract file with .osm or .osm.pbf extension.
 #'
-#' local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
+# local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
+#
+# cppRnet::extract_graph(local_osm_filename)
 #'
-#' cppRnet::extract_graph(local_osm_filename)
-#'
+#'@return this function returns the value 1 to the R environment when it's completed.
+#' It writes out 2 files containing nodes and segments. The files are written in the current directory and are called:
+#' `nodes.csv`,`road_segments.csv`.
 #'@export
 extract_graph <- function(filename){
   
@@ -38,14 +41,15 @@ extract_graph <- function(filename){
 #'Getting non-network data from raw osm files.
 #'
 #'@param filename a local osm extract file with .osm or .osm.pbf extension.
-#'
+#'@param main_keys a vector containing main keys to extract the values for. Check osm map features or vignette for a full detail.
+#'@examples
 #' local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
 #'
 #' data <- cppRnet::extract_data(local_osm_filename)
-#' 
-#' summary(data)
-#'
-#'
+#' head(data)
+#' head(data$attrs)
+#'@return a data table with several main columns, including one called `attrs` which contains lists 
+#'with named key=value pairs of the secondary osm tags. 
 #'@export
 extract_data <- function(filename, main_keys = NULL){
   
@@ -85,7 +89,6 @@ extract_data <- function(filename, main_keys = NULL){
   
   } else {
     stopifnot(all(main_keys %in% main_first_level))
-    
   }
   
   if (all(sapply(data,length)==length(data[[1]])
