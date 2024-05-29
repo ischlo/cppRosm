@@ -79,14 +79,16 @@ By default, only tags with keys $amenity,shop,tourism$ will be extracted.
 -   <div>
 
     ```{r}
-    
+
     library(cppRnet)
+    library(sf)
 
     test_file <- system.file(package = 'cppRnet','extdata','map.osm')
 
     data <- cppRnet::extract_data(test_file)
 
     head(data)
+    
     ```
 
     </div>
@@ -141,8 +143,9 @@ data |>
 # or same result, keeping the original data a `data.table`
 # data |> 
 #   cppRnet::construct_geom() |> 
-#   sf::st_set_geometry("geometry") |> 
-#   tmap::qtm()
+#   sf::st_as_sf() |> 
+#   sf::st_geometry() |> 
+#   plot()
 
 
 ```
@@ -170,7 +173,8 @@ As discussed earlier, the tags withe the $building$ key arguably fall into neith
 buildings <- cppRnet::extract_data(test_file,main_keys = "building")
 
 ```
-This function will run in a fraction of seconds and extract all the buildings from the file. It will again only provide the centroid in direct access: 
+
+This function will run in a fraction of seconds and extract all the buildings from the file. It will again only provide the centroid in direct access:
 
 ```{r}
 
@@ -182,6 +186,7 @@ buildings |>
 
 
 ```
+
 And we can reconstruct the geometries from the data hidden in `attrs` as follows:
 
 ```{r}
@@ -193,7 +198,8 @@ buildings |>
   plot()
 
 ```
-We can filter for specific tags: 
+
+We can filter for specific tags:
 
 ```{r}
 
@@ -203,7 +209,7 @@ buildings |>
 
 ```
 
-We observe the mutually exclusive nature of $amenity$ and $shop$ keys, justifying the earlier discussion and the differentiation of the $building$ key. The only intersection of the two keys is the famous in french *bar-tabac*, which is both a bar and a place to buy tobacco/cigarettes. 
+We observe the mutually exclusive nature of $amenity$ and $shop$ keys, justifying the earlier discussion and the differentiation of the $building$ key. The only intersection of the two keys is the famous in french *bar-tabac*, which is both a bar and a place to buy tobacco/cigarettes.
 
 More specific filtering:
 
@@ -215,9 +221,10 @@ buildings |>
   head()
 
 ```
+
 If searching for a specific $key=value$ in one tag and all values for another tag, consider the trick above.
 
-- It's generally not recommended to extract the building layer together with other main keys. 
+-   It's generally not recommended to extract the building layer together with other main keys.
 
 ## Alternatives
 
