@@ -120,7 +120,8 @@ data |>
   head()
 
 data |> 
-  cppRnet::filter_sec(keys=list("cuisine"=c("japanese","pizza"),"takeaway"=c("yes"))
+  cppRnet::filter_sec(keys=list("cuisine"=c("japanese","pizza")
+                                ,"takeaway"=c("yes"))
                       ,cores = 1) |> 
   head()
 
@@ -186,8 +187,8 @@ And we can reconstruct the geometries from the data hidden in `attrs` as follows
 ```{r}
 
 buildings |> 
-  cppRnet::construct_geom(complete = TRUE) |> 
-  sf::st_set_geometry("geometry") |> 
+  cppRnet::construct_geom(complete = TRUE,cores=1) |> 
+  sf::st_as_sf() |> 
   sf::st_geometry() |> 
   plot()
 

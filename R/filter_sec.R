@@ -33,7 +33,7 @@ filter_sec <- function(data,keys,cores=1){
     keys_found <- parallel::mcmapply(data$attrs
                                      ,mc.cores = cores
                                      ,FUN=\(attr){
-                                      any(mapply(attr[names(keys)],keys,FUN=\(x,y) any(grepl(pattern=y,x=x))))
+                                      any(mapply(attr[names(keys)],keys,FUN=\(x,y) any(grepl(x=x,pattern=paste(y,collapse = "|"),ignore.case=TRUE))))
                                      })
     
     data[keys_found,attrs]
