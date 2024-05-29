@@ -4,9 +4,9 @@
 \name{cppRnet-package}
 \alias{cppRnet}
 \alias{cppRnet-package}
-\title{cppRnet: Fast en efficient OSM data in R}
+\title{cppRnet: Fast en Efficient OSM Data in R}
 \description{
-This package provides a set of R function for working with OpenStreetMap extract data through the libosmium library in C++.
+A set of fast and user friendly functions for working with large OpenStreetMap extract data. Developed on top of the C++ libosmium library.
 }
 \seealso{
 Useful links:
@@ -17,7 +17,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Ivann Schlosser \email{schlosserivann@gmail.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Ivann Schlosser \email{schlosserivann@gmail.com} (\href{https://orcid.org/0009-0004-4099-3198}{ORCID})
 
 }
 \keyword{internal}

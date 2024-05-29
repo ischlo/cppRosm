@@ -79,6 +79,8 @@ By default, only tags with keys $amenity,shop,tourism$ will be extracted.
 -   <div>
 
     ```{r}
+    
+    library(cppRnet)
 
     test_file <- system.file(package = 'cppRnet','extdata','map.osm')
 
@@ -132,7 +134,8 @@ In a lot of cases, knowing the centroids of POIs is more than enough:
 
 data |> 
   sf::st_as_sf(coords=c("lon","lat"),crs=4326) |> 
-  tmap::qtm()
+  sf::st_geometry() |> 
+  plot()
 
 # or same result, keeping the original data a `data.table`
 # data |> 
@@ -151,7 +154,9 @@ data_geom <- data |>
   cppRnet::construct_geom(complete = TRUE,cores = 1) |> 
   sf::st_as_sf()
 
-tmap::qtm(data_geom)
+data_geom |> 
+  sf::st_geometry() |> 
+  plot()
 
 ```
 
@@ -171,7 +176,8 @@ This function will run in a fraction of seconds and extract all the buildings fr
 buildings |> 
   cppRnet::construct_geom() |>
   sf::st_set_geometry("geometry") |>
-  tmap::qtm()
+  sf::st_geometry() |> 
+  plot()
 
 
 ```
@@ -182,7 +188,8 @@ And we can reconstruct the geometries from the data hidden in `attrs` as follows
 buildings |> 
   cppRnet::construct_geom(complete = TRUE) |> 
   sf::st_set_geometry("geometry") |> 
-  tmap::qtm()
+  sf::st_geometry() |> 
+  plot()
 
 ```
 We can filter for specific tags: 
@@ -202,7 +209,7 @@ More specific filtering:
 ```{r}
 
 buildings |> 
-  filter_sec(keys = list("tourism"=c("")
+  cppRnet::filter_sec(keys = list("tourism"=c("")
                          ,"abandoned"=c("yes"))) |> 
   head()
 
