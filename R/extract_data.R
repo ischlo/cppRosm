@@ -18,7 +18,7 @@
 #'@export
 extract_data <- function(filename, main_keys = NULL){
   
-  assert_tool_is_installed('osmium')
+  # assert_tool_is_installed('osmium')
   
   main_first_level <- c(
     # "aerialway" 

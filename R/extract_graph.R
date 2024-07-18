@@ -17,7 +17,7 @@
 #'@export
 extract_graph <- function(filename){
   
-  assert_tool_is_installed('osmium')
+  # assert_tool_is_installed('osmium')
   
   f_names <- c('nodes.csv','road_segments.csv')
   

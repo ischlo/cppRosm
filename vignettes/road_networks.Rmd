@@ -7,6 +7,14 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r echo=FALSE, eval=TRUE}
+
+knitr::opts_chunk$set(eval = FALSE
+                      ,echo = TRUE
+                      ,include = TRUE)
+
+```
+
 # Description
 
 This mini-package provides a very fast, yet user-friendly way of exporting large road network data in a graph-like format. It uses the [**libosmium**](https://osmcode.org/libosmium/index.html) library in the background and proposes a simple R function to extract the road graph from a `.osm`, `.osm.pbf` extract file with OSM data.

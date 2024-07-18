@@ -7,6 +7,16 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r echo=FALSE, eval=TRUE}
+
+knitr::opts_chunk$set(eval = FALSE
+                      ,echo = TRUE
+                      ,include = TRUE)
+
+```
+
+
+
 ## Introduction
 
 Anyone who has used OpenStreetMap (OSM) data in R or python might agree that the tagging system, while it provides great flexibility and extensive classification options, is sometimes a bit challenging to work with. This vignettes will explain the approach to the tagging system that aims to make it easy to interact with features, their associated tags and their geometries. The main ambition being providing an easy access to large OSM data sets.

@@ -21,6 +21,7 @@
 construct_geom <- function(cpprnet_dt
                            ,complete = FALSE
                            ,cores = 1){
+  
   stopifnot("attrs"%in% colnames(cpprnet_dt))
 
   if(complete){
