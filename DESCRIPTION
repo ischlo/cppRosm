@@ -1,6 +1,6 @@
 Package: cppRnet
 Title: Fast en Efficient OSM Data in R
-Version: 0.0.9000
+Version: 1.0.0
 Authors@R: 
     person("Ivann", "Schlosser", , "schlosserivann@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "https://orcid.org/0009-0004-4099-3198"))
