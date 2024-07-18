@@ -1,5 +1,5 @@
 ---
-title: "An opinionated way of working with OSM data."
+title: "An opinionated way of working with OSM data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{An opinionated way of working with OSM data.}
@@ -14,8 +14,6 @@ knitr::opts_chunk$set(eval = FALSE
                       ,include = TRUE)
 
 ```
-
-
 
 ## Introduction
 
@@ -86,22 +84,18 @@ Arguably, some tags don't fall into any of these categories, yet you can export 
 
 By default, only tags with keys $amenity,shop,tourism$ will be extracted.
 
--   <div>
+```{r}
 
-    ```{r}
+library(cppRnet)
+library(sf)
 
-    library(cppRnet)
-    library(sf)
+test_file <- system.file(package = 'cppRnet','extdata','map.osm')
 
-    test_file <- system.file(package = 'cppRnet','extdata','map.osm')
+data <- cppRnet::extract_data(test_file)
 
-    data <- cppRnet::extract_data(test_file)
+head(data)
 
-    head(data)
-    
-    ```
-
-    </div>
+```
 
 The geometry is simplified to the centroid, for which the coordinates are provided in the lon,lat columns of the data table. A function allowing to reconstruct the full geometry is provided, but since it is not necessarily always usefull to have it, it is ommited in a first extraction. The nodes that constitute a full geometry, if it is more complex than a point, are added to the attrs column as a `data.frame`. These geometries are always closed, meaining they are polygons. This is meant to save memory especially for large data sets.
 
