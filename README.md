@@ -1,12 +1,20 @@
 Ivann Schlosser
 
+<!-- badges: start -->
+
+[![R-CMD-check](https://github.com/ischlo/cppRnet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ischlo/cppRnet/actions/workflows/R-CMD-check.yaml)
+
+![](https://github.com/ischlo/cppSim/actions/workflows/rhub.yaml/badge.svg)
+
+<!-- badges: end -->
+
 ## Introduction
 
 This package uses the **libosmium** library in the background and
-porposes an opinionated way of interacting with raw OSM data. It is
+proposes an opinionated way of interacting with raw OSM data. It is
 opinionated, because a number of assumptions are made, based on a long
 and sometimes frustrating experience of working with OSM data in R or
-python projects. The assumptions and the porposed *data schema* will be
+python projects. The assumptions and the proposed *data schema* will be
 covered in a separate vignette. This part will mainly cover the setup of
 the package.
 
