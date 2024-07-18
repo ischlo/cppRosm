@@ -44,8 +44,8 @@ class RoadSegmentExtractor : public osmium::handler::Handler {
 public:
   
   RoadSegmentExtractor(){
-    // segment_csv << "from," << "to," << "length," << "highway" << "\n";
-    // node_csv << "id," << "lon," << "lat"<<"\n"; 
+    segment_csv << "from," << "to," << "length," << "highway" << "\n";
+    node_csv << "id," << "lon," << "lat"<<"\n";
   };
   
   void way(const osmium::Way& way) {
