@@ -12,6 +12,7 @@ A set of fast and user friendly functions for working with large OpenStreetMap e
 Useful links:
 \itemize{
   \item \url{https://github.com/ischlo/cppRnet}
+  \item \url{https://ischlo.github.io/cppRnet/}
   \item Report bugs at \url{https://github.com/ischlo/cppRnet/issues}
 }
 

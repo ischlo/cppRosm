@@ -3,8 +3,9 @@ Ivann Schlosser
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/ischlo/cppRnet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ischlo/cppRnet/actions/workflows/R-CMD-check.yaml)
-
 ![](https://github.com/ischlo/cppSim/actions/workflows/rhub.yaml/badge.svg)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 <!-- badges: end -->
 

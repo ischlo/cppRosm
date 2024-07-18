@@ -7,7 +7,7 @@ Authors@R:
 Description: A set of fast and user friendly functions for working with large
     OpenStreetMap extract data. Developed on top of the C++ libosmium library.
 License: MIT + file LICENSE
-URL: https://github.com/ischlo/cppRnet
+URL: https://github.com/ischlo/cppRnet, https://ischlo.github.io/cppRnet/
 BugReports: https://github.com/ischlo/cppRnet/issues
 Imports: 
     cli,
@@ -21,7 +21,7 @@ LinkingTo:
     Rcpp
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: 
     knitr,
     rmarkdown
