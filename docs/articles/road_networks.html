@@ -81,6 +81,8 @@
 
     
     
+<pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
+<pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
 <div class="section level2">
 <h2 id="description">Description<a class="anchor" aria-label="anchor" href="#description"></a>
 </h2>
@@ -104,15 +106,16 @@ with almost no size limit.</p>
 <p>While the graph files produced can be used in any workflow, the
 intended use case is with the <a href="https://github.com/vlarmet/cppRouting" class="external-link"><strong>cppRouting</strong></a>
 package, which is outstanding for working with large scale road networks
-right from your R environment. Additionally, pre-processing of files can
-done with the <code>rosmium</code> package. For example to select a more
-specific bounding box in your data. One condition here is required, is
-that you export features in a complete way. Missing nodes can cause
-problems in the current version of the package.</p>
+right from your R environment. Additionally, pre-processing of raw
+extract files can done with the <code>rosmium</code> package. For
+example to select a more specific bounding box in your data. One
+condition here is required, is that you export features in a complete
+way. Missing nodes can cause problems in the current version of the
+package.</p>
 </div>
 </div>
 <div class="section level2">
-<h2 id="cpprnet">cppRosm<a class="anchor" aria-label="anchor" href="#cpprnet"></a>
+<h2 id="cpprosm">cppRosm<a class="anchor" aria-label="anchor" href="#cpprosm"></a>
 </h2>
 <p>The function <code>extract_graph</code> accepts the path to a raw OSM
 extract file, and writes into the working directory of the project 2
@@ -124,14 +127,14 @@ data sets: nodes.csv, road_segments.csv.</p>
 respectively the OSM id of a node, its longitude and latitude.</p>
 <table class="table">
 <thead><tr class="header">
-<th>id</th>
-<th>lon</th>
-<th>lat</th>
+<th><strong>id</strong></th>
+<th><strong>lon</strong></th>
+<th><strong>lat</strong></th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>character</td>
-<td>numeric</td>
-<td>numeric</td>
+<td><em>character</em></td>
+<td><em>numeric</em></td>
+<td><em>numeric</em></td>
 </tr></tbody>
 </table>
 <p><strong>road_segments.csv</strong> - contains at least 3 columns, but
@@ -139,16 +142,16 @@ can contain more. The minimum expected columns are from, to, length. The
 first 2 columns contain node ids.</p>
 <table class="table">
 <thead><tr class="header">
-<th>from</th>
-<th>to</th>
-<th>length</th>
-<th>highway</th>
+<th><strong>from</strong></th>
+<th><strong>to</strong></th>
+<th><strong>length</strong></th>
+<th><strong>highway</strong></th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>character</td>
-<td>character</td>
-<td>numeric</td>
-<td>character (factor)</td>
+<td><em>character</em></td>
+<td><em>character</em></td>
+<td><em>numeric</em></td>
+<td><em>character (factor)</em></td>
 </tr></tbody>
 </table>
 <p>In some cases, node ids can be cast to long integers, but this is not
@@ -159,25 +162,113 @@ recommended.</p>
 </h3>
 <p>Once the package and dependencies are installed, the workflow is the
 following:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ischlo/cppRosm" class="external-link">cppRosm</a></span><span class="op">)</span></span>
 <span><span class="co">## basic example code</span></span>
 <span></span>
 <span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span>package <span class="op">=</span> <span class="st">'cppRosm'</span>,<span class="st">'extdata'</span>,<span class="st">"map.osm"</span><span class="op">)</span> <span class="co"># path to a local file </span></span>
 <span></span>
-<span><span class="fu">cppRosm</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_graph.html">extract_graph</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># .... </span></span>
+<span><span class="fu">cppRosm</span><span class="fu">::</span><span class="fu"><a href="../reference/extract_graph.html">extract_graph</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Files will be written to:  /Users/cenv1069/Documents/packages/cppRosm/vignettes</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 1</span></span></code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># .... </span></span>
 <span></span>
 <span><span class="va">nodes</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">'nodes.csv'</span><span class="op">)</span></span>
-<span><span class="va">segments</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">'road_segments.csv'</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nodes</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">segments</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co">#### from here, use your preferred network package to build the graph.</span></span>
-<span></span>
-<span><span class="co"># .....</span></span></code></pre></div>
+<span><span class="va">segments</span> <span class="op">&lt;-</span> <span class="fu">data.table</span><span class="fu">::</span><span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/fread.html" class="external-link">fread</a></span><span class="op">(</span><span class="st">'road_segments.csv'</span><span class="op">)</span></span></code></pre></div>
+<table class="table kable_wrapper"><tbody><tr>
+<td>
+<table class="table">
+<caption>Nodes</caption>
+<thead><tr class="header">
+<th align="right">id</th>
+<th align="right">lon</th>
+<th align="right">lat</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">31772113</td>
+<td align="right">10.496</td>
+<td align="right">43.838</td>
+</tr>
+<tr class="even">
+<td align="right">1690315118</td>
+<td align="right">10.497</td>
+<td align="right">43.838</td>
+</tr>
+<tr class="odd">
+<td align="right">1347292720</td>
+<td align="right">10.498</td>
+<td align="right">43.838</td>
+</tr>
+<tr class="even">
+<td align="right">31772113</td>
+<td align="right">10.496</td>
+<td align="right">43.838</td>
+</tr>
+<tr class="odd">
+<td align="right">31772114</td>
+<td align="right">10.496</td>
+<td align="right">43.838</td>
+</tr>
+<tr class="even">
+<td align="right">31772114</td>
+<td align="right">10.496</td>
+<td align="right">43.838</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td>
+<table class="table">
+<caption>Segments</caption>
+<thead><tr class="header">
+<th align="right">from</th>
+<th align="right">to</th>
+<th align="right">length</th>
+<th align="left">highway</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">31772113</td>
+<td align="right">1690315118</td>
+<td align="right">86.6</td>
+<td align="left">service</td>
+</tr>
+<tr class="even">
+<td align="right">1690315118</td>
+<td align="right">1347292720</td>
+<td align="right">18.0</td>
+<td align="left">service</td>
+</tr>
+<tr class="odd">
+<td align="right">31772113</td>
+<td align="right">31772114</td>
+<td align="right">15.8</td>
+<td align="left">service</td>
+</tr>
+<tr class="even">
+<td align="right">31772114</td>
+<td align="right">31772112</td>
+<td align="right">85.4</td>
+<td align="left">service</td>
+</tr>
+<tr class="odd">
+<td align="right">31772112</td>
+<td align="right">1347292717</td>
+<td align="right">18.7</td>
+<td align="left">service</td>
+</tr>
+<tr class="even">
+<td align="right">31770541</td>
+<td align="right">10172140548</td>
+<td align="right">3.6</td>
+<td align="left">service</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr></tbody></table>
 <p>At the end of the execution of this code, you should find the two
 files in your working directory (if you don’t know which one is it, run
 <code><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd()</a></code>).</p>
@@ -203,7 +294,7 @@ ways. When using command line tools, such as libosmium or osmosis, this
 parameter is generally available. The recommended tool to use, is
 filtering a wider area with the <code>rosmium</code> package in the
 following way:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rosmium</span><span class="fu">::</span><span class="fu"><a href="https://ipeagit.github.io/rosmium/reference/extract.html" class="external-link">extract</a></span><span class="op">(</span></span>
 <span>  input_path <span class="op">=</span> <span class="st">".../map.osm"</span></span>
 <span>  ,extent <span class="op">=</span> <span class="fu">sf</span><span class="fu">::</span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_bbox.html" class="external-link">st_bbox</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># a bbox</span></span>

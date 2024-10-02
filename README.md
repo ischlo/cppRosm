@@ -1,4 +1,3 @@
-Ivann Schlosser
 
 <!-- badges: start -->
 
@@ -6,6 +5,7 @@ Ivann Schlosser
 ![](https://github.com/ischlo/cppSim/actions/workflows/rhub.yaml/badge.svg)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+![](https://github.com/ischlo/cppRosm/actions/workflows/pkgdown.yaml/badge.svg)
 
 <!-- badges: end -->
 
@@ -21,10 +21,12 @@ the package.
 
 ## Setup dependencies
 
-This section is under development, it will be a quick setup guide for
-the compiled dependencies.
-<!-- While ultimately, this package is easy to use, there are some steps to do in order to set up the dependencies that rely on compiled code. This section covers the minimum setup that should get you going on Mac.  -->
+The usage of `cppRosm` relies on the **libosmium** library. The
+necessary compiled code dependencies come with the package, facilitating
+it’s use.
 
+<!-- This section is under development, it will be a quick setup guide for the compiled dependencies. -->
+<!-- While ultimately, this package is easy to use, there are some steps to do in order to set up the dependencies that rely on compiled code. This section covers the minimum setup that should get you going on Mac.  -->
 <!-- First, we need to verify that the `C++` compilers are installed and up to date. Start by opening a terminal and typing the following command:  -->
 <!-- ``` bash  -->
 <!-- which g++-13 -->
@@ -33,16 +35,12 @@ the compiled dependencies.
 
 ## Installation
 
-The usage of `cppRosm` relies on the **libosmium** library, which needs
-to be installed on the machine. For more details on installation refer
-to the official website. On mac, it is recommended to install using
-[`brew`](https://brew.sh) with the following terminal command:
+<!-- which needs to be installed on the machine. For more details on installation refer to the official website. On mac, it is recommended to install using [`brew`](https://brew.sh) with the following terminal command:  -->
+<!-- ``` bash -->
+<!-- brew install libosmium -->
+<!-- ``` -->
 
-``` bash
-brew install libosmium
-```
-
-Next, install the package itself from github:
+Install the package from github:
 
 ``` r
 # remotes::install_github('ischlo/cppRosm')
@@ -50,9 +48,10 @@ Next, install the package itself from github:
 # pak::pak("ischlo/cppRosm")
 ```
 
-The package will detect the presence of the library and notify you if it
-doesn’t see it. Once the library is installed, you will need a OSM
-extract file, you can get one by manually exporting a selected area from
+<!-- The package will detect the presence of the library and notify you if it doesn't see it. -->
+
+Once the library is installed, you will need a OSM extract file, you can
+get one by manually exporting a selected area from
 [OSM](openstreetmap.org), or for bigger areas, the best approach is to
 download a [geofabrick](https://download.geofabrik.de) extract.
 
@@ -61,7 +60,7 @@ download a [geofabrick](https://download.geofabrik.de) extract.
 This is a early stage development package that could develop more
 functionalities for integrating the extremely performant **osmium**
 library with a user friendly R workflow. The choice has been made for
-graph data, to first export it to *.csv* files and only after reading it
+graph data to first export it to *.csv* files and only after reading it
 into R. This is to avoid potentially creating files that are to big to
 be handled by the R environment, while still extracting the data.
 However, this process can fail sometimes, resulting in loss of unsaved
@@ -72,7 +71,7 @@ workflows are covered in a separate vignette.
 
 There are a few great packages for working with OSM data, they all
 provide a wide set of functionalities. If the size of your data is not
-excessive, like small city-village scale, `osmdata` might be your tool
+excessive, like small city/village scale, `osmdata` might be your tool
 of choice in R. If the data gets bigger, `osmextract` could be the right
 choice. This package aims to be both user friendly and flexible, but
 also high performing.
