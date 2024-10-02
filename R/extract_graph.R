@@ -7,9 +7,9 @@
 #'
 #'@param filename a local osm extract file with .osm or .osm.pbf extension.
 #'
-# local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
+# local_osm_filename <- system.file("extdata",'map.osm', package = "cppRosm")
 #
-# cppRnet::extract_graph(local_osm_filename)
+# cppRosm::extract_graph(local_osm_filename)
 #'
 #'@return this function returns the value 1 to the R environment when it's completed.
 #' It writes out 2 files containing nodes and segments. The files are written in the current directory and are called:

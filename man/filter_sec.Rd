@@ -7,7 +7,7 @@
 filter_sec(data, keys, cores = 1)
 }
 \arguments{
-\item{data}{a cppRnet data set, with an \code{attrs} column.}
+\item{data}{a cppRosm data set, with an \code{attrs} column.}
 
 \item{keys}{either a vector of valid key parameters, or a named list where names correspond to keys and
 attributes are vectors of matching values.}
@@ -15,19 +15,19 @@ attributes are vectors of matching values.}
 \item{cores}{number of cores to parallelise the computation}
 }
 \description{
-This function provides a handy way of filtering a cppRnet data set for specific secondary tags.
+This function provides a handy way of filtering a cppRosm data set for specific secondary tags.
 It will return a data set to which will be added new columns based on the specific secondary keys and values that
 are looked for.
 }
 \examples{
 
-test_file <- system.file(package = 'cppRnet','extdata','map.osm')
-data <- cppRnet::extract_data(test_file)
+test_file <- system.file(package = 'cppRosm','extdata','map.osm')
+data <- cppRosm::extract_data(test_file)
 
 
 keys <- list("cuisine"=c("pizza","japanese")
             ,"takeaway"=c("yes"))
 
-data_filtered <- cppRnet::filter_sec(data,keys)
+data_filtered <- cppRosm::filter_sec(data,keys)
 
 }

@@ -12,6 +12,6 @@
 #' @importFrom data.table .SD
 #' @importFrom data.table data.table
 #' @importFrom Rcpp sourceCpp
-#' @useDynLib cppRnet, .registration = TRUE
+#' @useDynLib cppRosm, .registration = TRUE
 ## usethis namespace: end
 NULL

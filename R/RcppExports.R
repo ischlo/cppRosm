@@ -2,10 +2,10 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 cpp_extract_graph <- function(file) {
-    .Call(`_cppRnet_cpp_extract_graph`, file)
+    .Call(`_cppRosm_cpp_extract_graph`, file)
 }
 
 cpp_extract_data <- function(file, main_sel) {
-    .Call(`_cppRnet_cpp_extract_data`, file, main_sel)
+    .Call(`_cppRosm_cpp_extract_data`, file, main_sel)
 }
 

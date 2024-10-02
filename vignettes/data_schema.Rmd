@@ -86,12 +86,12 @@ By default, only tags with keys $amenity,shop,tourism$ will be extracted.
 
 ```{r}
 
-library(cppRnet)
+library(cppRosm)
 library(sf)
 
-test_file <- system.file(package = 'cppRnet','extdata','map.osm')
+test_file <- system.file(package = 'cppRosm','extdata','map.osm')
 
-data <- cppRnet::extract_data(test_file)
+data <- cppRosm::extract_data(test_file)
 
 head(data)
 
@@ -121,12 +121,12 @@ A function to efficiently filter the secondary tags returns a data frame, where 
 ```{r}
 
 data |> 
-  cppRnet::filter_sec(keys=c("cuisine","takeaway")
+  cppRosm::filter_sec(keys=c("cuisine","takeaway")
                       ,cores=1) |> 
   head()
 
 data |> 
-  cppRnet::filter_sec(keys=list("cuisine"=c("japanese","pizza")
+  cppRosm::filter_sec(keys=list("cuisine"=c("japanese","pizza")
                                 ,"takeaway"=c("yes"))
                       ,cores = 1) |> 
   head()
@@ -146,7 +146,7 @@ data |>
 
 # or same result, keeping the original data a `data.table`
 # data |> 
-#   cppRnet::construct_geom() |> 
+#   cppRosm::construct_geom() |> 
 #   sf::st_as_sf() |> 
 #   sf::st_geometry() |> 
 #   plot()
@@ -159,7 +159,7 @@ But there will be times when the original geometry might be of interest, in this
 ```{r}
 
 data_geom <- data |> 
-  cppRnet::construct_geom(complete = TRUE,cores = 1) |> 
+  cppRosm::construct_geom(complete = TRUE,cores = 1) |> 
   sf::st_as_sf()
 
 data_geom |> 
@@ -174,7 +174,7 @@ As discussed earlier, the tags withe the $building$ key arguably fall into neith
 
 ```{r}
 
-buildings <- cppRnet::extract_data(test_file,main_keys = "building")
+buildings <- cppRosm::extract_data(test_file,main_keys = "building")
 
 ```
 
@@ -183,7 +183,7 @@ This function will run in a fraction of seconds and extract all the buildings fr
 ```{r}
 
 buildings |> 
-  cppRnet::construct_geom() |>
+  cppRosm::construct_geom() |>
   sf::st_set_geometry("geometry") |>
   sf::st_geometry() |> 
   plot()
@@ -196,7 +196,7 @@ And we can reconstruct the geometries from the data hidden in `attrs` as follows
 ```{r}
 
 buildings |> 
-  cppRnet::construct_geom(complete = TRUE,cores=1) |> 
+  cppRosm::construct_geom(complete = TRUE,cores=1) |> 
   sf::st_as_sf() |> 
   sf::st_geometry() |> 
   plot()
@@ -208,7 +208,7 @@ We can filter for specific tags:
 ```{r}
 
 buildings |> 
-  cppRnet::filter_sec(keys=c("shop","amenity")) |> 
+  cppRosm::filter_sec(keys=c("shop","amenity")) |> 
   head()
 
 ```
@@ -220,7 +220,7 @@ More specific filtering:
 ```{r}
 
 buildings |> 
-  cppRnet::filter_sec(keys = list("tourism"=c("")
+  cppRosm::filter_sec(keys = list("tourism"=c("")
                          ,"abandoned"=c("yes"))) |> 
   head()
 
@@ -232,7 +232,7 @@ If searching for a specific $key=value$ in one tag and all values for another ta
 
 ## Alternatives
 
--   `osmdata`: while this is a great package that I have used a lot, I found it frustrating to have all the different geometries gathered into separate tables, and each table containing huge numbers of `NA` columns. The `attrs` column in a cppRnet table provides an alternative way to store all the secondary tags. Additionally, all the geometries are simplified to their centroid, but the possibility to reconstruct the original ones are provided with the `construct_geom` function.
+-   `osmdata`: while this is a great package that I have used a lot, I found it frustrating to have all the different geometries gathered into separate tables, and each table containing huge numbers of `NA` columns. The `attrs` column in a cppRosm table provides an alternative way to store all the secondary tags. Additionally, all the geometries are simplified to their centroid, but the possibility to reconstruct the original ones are provided with the `construct_geom` function.
 -   `osmextract`: great for working with large OSM files. But the filtering of features remains a bit obscure in my opinion, although it seems to provide great flexibility, but requires a good knowledge of OSM internals.
 
 ## Conclusion

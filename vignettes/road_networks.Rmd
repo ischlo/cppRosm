@@ -25,7 +25,7 @@ While there are already great packages for working with OSM data, I found myself
 
 While the graph files produced can be used in any workflow, the intended use case is with the [**cppRouting**](https://github.com/vlarmet/cppRouting) package, which is outstanding for working with large scale road networks right from your R environment. Additionally, pre-processing of files can done with the `rosmium` package. For example to select a more specific bounding box in your data. One condition here is required, is that you export features in a complete way. Missing nodes can cause problems in the current version of the package.
 
-# cppRnet
+# cppRosm
 
 The function `extract_graph` accepts the path to a raw OSM extract file, and writes into the working directory of the project 2 data sets: nodes.csv, road_segments.csv.
 
@@ -50,12 +50,12 @@ In some cases, node ids can be cast to long integers, but this is not recommende
 Once the package and dependencies are installed, the workflow is the following:
 
 ```{r example, echo=TRUE,eval=FALSE,include=TRUE}
-library(cppRnet)
+library(cppRosm)
 ## basic example code
 
-file <- system.file(package = 'cppRnet','extdata',"map.osm") # path to a local file 
+file <- system.file(package = 'cppRosm','extdata',"map.osm") # path to a local file 
 
-cppRnet::extract_graph(file)
+cppRosm::extract_graph(file)
 
 # .... 
 

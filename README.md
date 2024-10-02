@@ -2,7 +2,7 @@ Ivann Schlosser
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/ischlo/cppRnet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ischlo/cppRnet/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/ischlo/cppRosm/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ischlo/cppRosm/actions/workflows/R-CMD-check.yaml)
 ![](https://github.com/ischlo/cppSim/actions/workflows/rhub.yaml/badge.svg)
 [![Lifecycle:
 stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
@@ -33,7 +33,7 @@ the compiled dependencies.
 
 ## Installation
 
-The usage of `cppRnet` relies on the **libosmium** library, which needs
+The usage of `cppRosm` relies on the **libosmium** library, which needs
 to be installed on the machine. For more details on installation refer
 to the official website. On mac, it is recommended to install using
 [`brew`](https://brew.sh) with the following terminal command:
@@ -45,9 +45,9 @@ brew install libosmium
 Next, install the package itself from github:
 
 ``` r
-# remotes::install_github('ischlo/cppRnet')
-# devtools::install_github('ischlo/cppRnet')
-# pak::pak("ischlo/cppRnet")
+# remotes::install_github('ischlo/cppRosm')
+# devtools::install_github('ischlo/cppRosm')
+# pak::pak("ischlo/cppRosm")
 ```
 
 The package will detect the presence of the library and notify you if it

@@ -2,16 +2,16 @@
 #'@title construct_geom
 #'@name construct_geom
 #'@description
-#'From a cppRnet data table, make the geometries.
+#'From a cppRosm data table, make the geometries.
 #'
-#'@param cpprnet_dt a data table obtained with cppRnet extract_data()
+#'@param cpprnet_dt a data table obtained with cppRosm extract_data()
 #'@param complete bool. TRUE to reconstruct Polygons, else use just points.
 #'@param cores integer. Run the computation on multiple cores using `parallel`.
 #'@examples
-#'cpprnet_filepath <- system.file(package = 'cppRnet','extdata','map.osm')
-#'cpprnet_dt <- cppRnet::extract_data(filename = cpprnet_filepath)
+#'cpprnet_filepath <- system.file(package = 'cppRosm','extdata','map.osm')
+#'cpprnet_dt <- cppRosm::extract_data(filename = cpprnet_filepath)
 #'
-#'cppRnet::construct_geom(cpprnet_dt,complete=TRUE)
+#'cppRosm::construct_geom(cpprnet_dt,complete=TRUE)
 #'
 #'head(cpprnet_dt$geometry)
 #'

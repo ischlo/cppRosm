@@ -12,7 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 
 // cpp_extract_graph
 int cpp_extract_graph(const std::string& file);
-RcppExport SEXP _cppRnet_cpp_extract_graph(SEXP fileSEXP) {
+RcppExport SEXP _cppRosm_cpp_extract_graph(SEXP fileSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -23,7 +23,7 @@ END_RCPP
 }
 // cpp_extract_data
 Rcpp::List cpp_extract_data(const std::string& file, Rcpp::CharacterVector main_sel);
-RcppExport SEXP _cppRnet_cpp_extract_data(SEXP fileSEXP, SEXP main_selSEXP) {
+RcppExport SEXP _cppRosm_cpp_extract_data(SEXP fileSEXP, SEXP main_selSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -35,12 +35,12 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_cppRnet_cpp_extract_graph", (DL_FUNC) &_cppRnet_cpp_extract_graph, 1},
-    {"_cppRnet_cpp_extract_data", (DL_FUNC) &_cppRnet_cpp_extract_data, 2},
+    {"_cppRosm_cpp_extract_graph", (DL_FUNC) &_cppRosm_cpp_extract_graph, 1},
+    {"_cppRosm_cpp_extract_data", (DL_FUNC) &_cppRosm_cpp_extract_data, 2},
     {NULL, NULL, 0}
 };
 
-RcppExport void R_init_cppRnet(DllInfo *dll) {
+RcppExport void R_init_cppRosm(DllInfo *dll) {
     R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }
