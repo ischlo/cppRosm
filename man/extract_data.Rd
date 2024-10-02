@@ -19,9 +19,9 @@ with named key=value pairs of the secondary osm tags.
 Getting non-network data from raw osm files.
 }
 \examples{
-local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
+local_osm_filename <- system.file("extdata",'map.osm', package = "cppRosm")
 
-data <- cppRnet::extract_data(local_osm_filename)
+data <- cppRosm::extract_data(local_osm_filename)
 head(data)
 head(data$attrs)
 }

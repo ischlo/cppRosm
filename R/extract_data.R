@@ -8,9 +8,9 @@
 #'@param filename a local osm extract file with .osm or .osm.pbf extension.
 #'@param main_keys a vector containing main keys to extract the values for. Check osm map features or vignette for a full detail.
 #'@examples
-#' local_osm_filename <- system.file("extdata",'map.osm', package = "cppRnet")
+#' local_osm_filename <- system.file("extdata",'map.osm', package = "cppRosm")
 #'
-#' data <- cppRnet::extract_data(local_osm_filename)
+#' data <- cppRosm::extract_data(local_osm_filename)
 #' head(data)
 #' head(data$attrs)
 #'@return a data table with several main columns, including one called `attrs` which contains lists 

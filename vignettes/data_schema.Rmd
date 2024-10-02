@@ -2,16 +2,18 @@
 title: "An opinionated way of working with OSM data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An opinionated way of working with OSM data.}
+  %\VignetteIndexEntry{An opinionated way of working with OSM data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r echo=FALSE, eval=TRUE}
 
-knitr::opts_chunk$set(eval = FALSE
+knitr::opts_chunk$set(eval = TRUE
                       ,echo = TRUE
-                      ,include = TRUE)
+                      ,include = TRUE
+                      ,warning = FALSE
+                      )
 
 ```
 
@@ -21,7 +23,7 @@ Anyone who has used OpenStreetMap (OSM) data in R or python might agree that the
 
 ## OSM tags
 
-A tag is a tuple of values, the first element is called a $key$, while the second is the corresponding $value$. Together, they form a tag which is written out as a $key=value$ form. The key corresponds to a broad classification, while the value is specific. For example $amenity=restaurant$. The $key$ is $amenity$, while the $value$ is $restaurant$. Generally, there is a few values corresponding to a key. - Every OSM feature consists of a set of nodes and a set of tags. The nodes are geographically referenced, which means they have associated coordinates, allowing to reconstruct the geometry of a feature. A detailed list of possible value and recommendations are avaialbe in the following article : [OSM map features](https://wiki.openstreetmap.org/wiki/Map_features#Primary_features).
+A tag is a tuple of values, the first element is called a $key$, while the second is the corresponding $value$. Together, they form a tag which is written out as a $key=value$ form. The key corresponds to a broad classification, while the value is specific. For example $amenity=restaurant$. The $key$ is $amenity$, while the $value$ is $restaurant$. Generally, there are a few values corresponding to a key. - Every OSM feature consists of a set of nodes and a set of tags. The nodes are geographically referenced, which means they have associated coordinates, allowing to reconstruct the geometry of a feature. A detailed list of possible values and recommendations are available in the following article : [OSM map features](https://wiki.openstreetmap.org/wiki/Map_features#Primary_features).
 
 ## Different data types
 
@@ -73,44 +75,52 @@ Accounting for the fact that OSM data is crowd sourced and therefore there is so
 |                                                                             |                                           |
 | -   Provide a certain amount of information, but remain sufficiently broad. | -   complement each other                 |
 |                                                                             |                                           |
-| -                                                                           |                                           |
 +-----------------------------------------------------------------------------+-------------------------------------------+
 | amenity, shop, tourism etc                                                  | addr:name, addr:street, cuisine, takeaway |
 +-----------------------------------------------------------------------------+-------------------------------------------+
 
-Arguably, some tags don't fall into any of these categories, yet you can export them with the `export_data` function, such a tag can be for the $building$ key. This qualifies more as a layer of data, much like the road network.
+Arguably, some tags don't fall into any of these categories, you can still export them with the `export_data` function, such a tag can be for the $building$ key. This qualifies more as a layer of data, much like the road network.
 
 ## Example
 
 By default, only tags with keys $amenity,shop,tourism$ will be extracted.
 
-```{r}
+```{r, layout="l-body-outset"}
 
-library(cppRnet)
+library(cppRosm)
 library(sf)
 
-test_file <- system.file(package = 'cppRnet','extdata','map.osm')
+test_file <- system.file(package = 'cppRosm','extdata','map.osm')
 
-data <- cppRnet::extract_data(test_file)
+data <- cppRosm::extract_data(test_file)
 
-head(data)
+head(data) |> 
+  knitr::kable(digits = 3)
 
 ```
 
-The geometry is simplified to the centroid, for which the coordinates are provided in the lon,lat columns of the data table. A function allowing to reconstruct the full geometry is provided, but since it is not necessarily always usefull to have it, it is ommited in a first extraction. The nodes that constitute a full geometry, if it is more complex than a point, are added to the attrs column as a `data.frame`. These geometries are always closed, meaining they are polygons. This is meant to save memory especially for large data sets.
+The geometry is simplified to the centroid, for which the coordinates are provided in the *lon*,*lat* columns of the data table. A function allowing to reconstruct the full geometry is provided, but since it is not necessarily always usefull to have it, it is ommited in a first extraction. The nodes that constitute a full geometry, if it is more complex than a point, are added to the attrs column as a `data.frame`. These geometries are always closed, meaning they are polygons. This is meant to save memory especially for large data sets.
 
 With this data format, we can now easily manipulate all the POIs, or select specific keys, or specific values, or both.
 
-```{r}
-
+```{r, layout="l-body-outset"}
 # filer by key
-data[key=="amenity",] |> head()
+data[key=="amenity",] |> head() |> 
+  knitr::kable(digits = 3)
+```
 
+
+```{r, layout="l-body-outset"}
 # filter by value
-data[value=="restaurant",] |> head()
+data[value=="restaurant",] |> head() |> 
+  knitr::kable(digits = 3)
+```
 
+
+```{r, layout="l-body-outset"}
 # both: use or to include specific values of different keys and keys
-data[key=="shop" | value=="restaurant",] |> head()
+data[key=="shop" | value=="restaurant",] |> head() |> 
+  knitr::kable(digits = 3)
 
 ```
 
@@ -118,18 +128,22 @@ data[key=="shop" | value=="restaurant",] |> head()
 
 A function to efficiently filter the secondary tags returns a data frame, where the searched for key will be added as a column for all feature that has a non-`NA` match. Under the hood, values are matched using regular expressions, which maximises the chance of finding the desired values in sometimes complicated OSM values.
 
-```{r}
-
+```{r, layout="l-body-outset"}
 data |> 
-  cppRnet::filter_sec(keys=c("cuisine","takeaway")
+  cppRosm::filter_sec(keys=c("cuisine","takeaway")
                       ,cores=1) |> 
-  head()
+  head() |> 
+  knitr::kable(digits = 3)
+```
 
+
+```{r, layout="l-body-outset"}
 data |> 
-  cppRnet::filter_sec(keys=list("cuisine"=c("japanese","pizza")
+  cppRosm::filter_sec(keys=list("cuisine"=c("japanese","pizza")
                                 ,"takeaway"=c("yes"))
                       ,cores = 1) |> 
-  head()
+  head() |> 
+  knitr::kable(digits = 3)
 
 ```
 
@@ -137,16 +151,16 @@ data |>
 
 In a lot of cases, knowing the centroids of POIs is more than enough:
 
-```{r}
+```{r, layout="l-body-outset", fig.width=6,fig.height=6}
 
 data |> 
   sf::st_as_sf(coords=c("lon","lat"),crs=4326) |> 
   sf::st_geometry() |> 
-  plot()
+  plot(pch=19)
 
 # or same result, keeping the original data a `data.table`
 # data |> 
-#   cppRnet::construct_geom() |> 
+#   cppRosm::construct_geom() |> 
 #   sf::st_as_sf() |> 
 #   sf::st_geometry() |> 
 #   plot()
@@ -156,15 +170,15 @@ data |>
 
 But there will be times when the original geometry might be of interest, in this case use the `construct_geom` function:
 
-```{r}
+```{r layout="l-body-outset" , fig.width=6,fig.height=6}
 
 data_geom <- data |> 
-  cppRnet::construct_geom(complete = TRUE,cores = 1) |> 
+  cppRosm::construct_geom(complete = TRUE,cores = 1) |> 
   sf::st_as_sf()
 
 data_geom |> 
   sf::st_geometry() |> 
-  plot()
+  plot(pch=19)
 
 ```
 
@@ -174,42 +188,44 @@ As discussed earlier, the tags withe the $building$ key arguably fall into neith
 
 ```{r}
 
-buildings <- cppRnet::extract_data(test_file,main_keys = "building")
+buildings <- cppRosm::extract_data(test_file,main_keys = "building")
 
 ```
 
 This function will run in a fraction of seconds and extract all the buildings from the file. It will again only provide the centroid in direct access:
 
-```{r}
+```{r, layout="l-body-outset", fig.width=6,fig.height=6}
 
 buildings |> 
-  cppRnet::construct_geom() |>
+  cppRosm::construct_geom() |>
   sf::st_set_geometry("geometry") |>
   sf::st_geometry() |> 
-  plot()
+  plot(pch=19)
 
 
 ```
 
 And we can reconstruct the geometries from the data hidden in `attrs` as follows:
 
-```{r}
+```{r, layout="l-body-outset", fig.width=6,fig.height=6}
 
 buildings |> 
-  cppRnet::construct_geom(complete = TRUE,cores=1) |> 
+  cppRosm::construct_geom(complete = TRUE,cores=1) |> 
   sf::st_as_sf() |> 
   sf::st_geometry() |> 
-  plot()
+  plot(pch=19)
 
 ```
 
 We can filter for specific tags:
 
-```{r}
+```{r, layout="l-body-outset"}
 
 buildings |> 
-  cppRnet::filter_sec(keys=c("shop","amenity")) |> 
-  head()
+  cppRosm::filter_sec(keys=c("shop","amenity")) |> 
+  dplyr::select(!attrs) |> 
+  head() |> 
+  knitr::kable(digits = 3)
 
 ```
 
@@ -217,12 +233,14 @@ We observe the mutually exclusive nature of $amenity$ and $shop$ keys, justifyin
 
 More specific filtering:
 
-```{r}
+```{r layout="l-body-outset"}
 
 buildings |> 
-  cppRnet::filter_sec(keys = list("tourism"=c("")
-                         ,"abandoned"=c("yes"))) |> 
-  head()
+  cppRosm::filter_sec(keys = list("tourism" = c("")
+                         ,"abandoned" = c("yes"))) |> 
+  dplyr::select(!attrs) |> 
+  head() |> 
+  knitr::kable(digits = 3)
 
 ```
 
@@ -232,7 +250,7 @@ If searching for a specific $key=value$ in one tag and all values for another ta
 
 ## Alternatives
 
--   `osmdata`: while this is a great package that I have used a lot, I found it frustrating to have all the different geometries gathered into separate tables, and each table containing huge numbers of `NA` columns. The `attrs` column in a cppRnet table provides an alternative way to store all the secondary tags. Additionally, all the geometries are simplified to their centroid, but the possibility to reconstruct the original ones are provided with the `construct_geom` function.
+-   `osmdata`: while this is a great package that I have used a lot, I found it frustrating to have all the different geometries gathered into separate tables, and each table containing huge numbers of `NA` columns. The `attrs` column in a cppRosm table provides an alternative way to store all the secondary tags. Additionally, all the geometries are simplified to their centroid, but the possibility to reconstruct the original ones are provided with the `construct_geom` function.
 -   `osmextract`: great for working with large OSM files. But the filtering of features remains a bit obscure in my opinion, although it seems to provide great flexibility, but requires a good knowledge of OSM internals.
 
 ## Conclusion

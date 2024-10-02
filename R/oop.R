@@ -1,17 +1,17 @@
 # oop 
-# creating the cppRnet data.frame/data.table S3 class for better consistency.
+# creating the cppRosm data.frame/data.table S3 class for better consistency.
 
 # new_myclass()
 # validate_myclass()
 # myclass()
 
-# a cppRnet class object is also a data.frame, or data.table. 
+# a cppRosm class object is also a data.frame, or data.table. 
 # it has a few restrictions, mainly the attrs column that should contain named lists.
 # an id column with osm ids.
 # a lon and lat columns
 # a key and value columns in the simplest form. 
 
-# any method of the cppRnet package that uses cppRnet data tables should ideally do a validity check.
+# any method of the cppRosm package that uses cppRosm data tables should ideally do a validity check.
 
 new_cppRnet_dt <- function(dt = data.frame()){
   

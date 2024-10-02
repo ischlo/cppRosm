@@ -6,5 +6,9 @@
 inst/doc
 /doc/
 /Meta/
+<<<<<<< HEAD
 docs
 *.Rproj
+=======
+
+>>>>>>> gh-pages

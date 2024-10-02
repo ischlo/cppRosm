@@ -7,7 +7,7 @@
 construct_geom(cpprnet_dt, complete = FALSE, cores = 1)
 }
 \arguments{
-\item{cpprnet_dt}{a data table obtained with cppRnet extract_data()}
+\item{cpprnet_dt}{a data table obtained with cppRosm extract_data()}
 
 \item{complete}{bool. TRUE to reconstruct Polygons, else use just points.}
 
@@ -18,13 +18,13 @@ Modifies the provided cpprnet_dt object and adds an \code{sf} geometry column to
 Full geometries typically contain polygons and points.
 }
 \description{
-From a cppRnet data table, make the geometries.
+From a cppRosm data table, make the geometries.
 }
 \examples{
-cpprnet_filepath <- system.file(package = 'cppRnet','extdata','map.osm')
-cpprnet_dt <- cppRnet::extract_data(filename = cpprnet_filepath)
+cpprnet_filepath <- system.file(package = 'cppRosm','extdata','map.osm')
+cpprnet_dt <- cppRosm::extract_data(filename = cpprnet_filepath)
 
-cppRnet::construct_geom(cpprnet_dt,complete=TRUE)
+cppRosm::construct_geom(cpprnet_dt,complete=TRUE)
 
 head(cpprnet_dt$geometry)
 
