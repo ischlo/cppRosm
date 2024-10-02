@@ -6,6 +6,6 @@ articles:
   road_networks: road_networks.html
 last_built: 2024-07-18T22:05Z
 urls:
-  reference: https://ischlo.github.io/cppRnet/reference
-  article: https://ischlo.github.io/cppRnet/articles
+  reference: https://ischlo.github.io/cppRosm/reference
+  article: https://ischlo.github.io/cppRosm/articles
 
