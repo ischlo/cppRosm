@@ -532,8 +532,8 @@ namespace osmium {
 // =========== Unix implementation =============
 
 // MAP_FAILED is often a macro containing an old style cast
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wold-style-cast"
+// #pragma GCC diagnostic push
+// #pragma GCC diagnostic ignored "-Wold-style-cast"
 
 inline bool osmium::util::MemoryMapping::is_valid() const noexcept {
     return m_addr != MAP_FAILED; // NOLINT(cppcoreguidelines-pro-type-cstyle-cast,performance-no-int-to-ptr)
@@ -543,7 +543,7 @@ inline void osmium::util::MemoryMapping::make_invalid() noexcept {
     m_addr = MAP_FAILED; // NOLINT(cppcoreguidelines-pro-type-cstyle-cast,performance-no-int-to-ptr)
 }
 
-#pragma GCC diagnostic pop
+// #pragma GCC diagnostic pop
 
 // for BSD systems
 #ifndef MAP_ANONYMOUS
