@@ -7,23 +7,21 @@ PKG_CPPFLAGS = -Ilibosmium/include -Iprotozero/include
 $(SHLIB): libosmium protozero
 
 protozero:
-        (cd protozero; \
-          CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" \
-          CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" \
-	  cmake . \
-	    -DCMAKE_BUILD_TYPE=Release \
-	    -DBUILD_SHARED_LIBS:bool=OFF \
-	    -DCMAKE_POSITION_INDEPENDENT_CODE:bool=ON; \
-	  $(MAKE))
-
-
+	(cd protozero; \
+	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" \
+  CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" \
+  cmake . \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS:bool=OFF \
+    -DCMAKE_POSITION_INDEPENDENT_CODE:bool=ON; \
+	$(MAKE))
 
 libosmium:
-        (cd libosmium; \
-          CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" \
-          CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" \
-	  cmake . \
-	    -DCMAKE_BUILD_TYPE=Release \
-	    -DBUILD_SHARED_LIBS:bool=OFF \
-	    -DCMAKE_POSITION_INDEPENDENT_CODE:bool=ON; \
-	  $(MAKE))
+	(cd libosmium; \
+  CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" \
+  CPPFLAGS="$(CPPFLAGS)" LDFLAGS="$(LDFLAGS)" \
+  cmake . \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DBUILD_SHARED_LIBS:bool=OFF \
+    -DCMAKE_POSITION_INDEPENDENT_CODE:bool=ON; \
+  $(MAKE))

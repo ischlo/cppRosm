@@ -12,6 +12,7 @@ BugReports: https://github.com/ischlo/cppRosm/issues
 Imports: 
     cli,
     data.table,
+    dplyr,
     glue,
     parallel,
     processx,
