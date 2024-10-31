@@ -17,7 +17,7 @@ assert_tool_is_installed <- function(tool) {
     
       cli::cli_abort(
         glue::glue("Could not find `{tool}` in system."
-                   ,"Please make sure it has been installed and added to PATH."),
+                   ,"Make sure it has been installed and added to PATH."),
       )
   }
   

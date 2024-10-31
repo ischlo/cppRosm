@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r echo=FALSE, eval=TRUE}
+```{r echo=FALSE, eval=TRUE,include=FALSE}
 
 knitr::opts_chunk$set(eval = TRUE
                       ,echo = TRUE
@@ -64,6 +64,7 @@ cppRosm::extract_graph(file)
 
 nodes <- data.table::fread('nodes.csv')
 segments <- data.table::fread('road_segments.csv')
+
 ```
 
 

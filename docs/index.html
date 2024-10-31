@@ -67,9 +67,7 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><p>Ivann Schlosser</p>
-<!-- badges: start -->
-
+  <main id="main" class="col-md-9">
 <!-- badges: end -->
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
@@ -79,7 +77,9 @@
 <div class="section level2">
 <h2 id="setup-dependencies">Setup dependencies<a class="anchor" aria-label="anchor" href="#setup-dependencies"></a>
 </h2>
-<p>This section is under development, it will be a quick setup guide for the compiled dependencies. <!-- While ultimately, this package is easy to use, there are some steps to do in order to set up the dependencies that rely on compiled code. This section covers the minimum setup that should get you going on Mac.  --></p>
+<p>The usage of <code>cppRosm</code> relies on the <strong>libosmium</strong> library. The necessary compiled code dependencies come with the package, facilitating it’s use.</p>
+<!-- This section is under development, it will be a quick setup guide for the compiled dependencies. -->
+<!-- While ultimately, this package is easy to use, there are some steps to do in order to set up the dependencies that rely on compiled code. This section covers the minimum setup that should get you going on Mac.  -->
 <!-- First, we need to verify that the `C++` compilers are installed and up to date. Start by opening a terminal and typing the following command:  -->
 <!-- ``` bash  -->
 <!-- which g++-13 -->
@@ -89,24 +89,27 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>The usage of <code>cppRosm</code> relies on the <strong>libosmium</strong> library, which needs to be installed on the machine. For more details on installation refer to the official website. On mac, it is recommended to install using <a href="https://brew.sh" class="external-link"><code>brew</code></a> with the following terminal command:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">brew</span> install libosmium</span></code></pre></div>
-<p>Next, install the package itself from github:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<!-- which needs to be installed on the machine. For more details on installation refer to the official website. On mac, it is recommended to install using [`brew`](https://brew.sh) with the following terminal command:  -->
+<!-- ``` bash -->
+<!-- brew install libosmium -->
+<!-- ``` -->
+<p>Install the package from github:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># remotes::install_github('ischlo/cppRosm')</span></span>
 <span><span class="co"># devtools::install_github('ischlo/cppRosm')</span></span>
 <span><span class="co"># pak::pak("ischlo/cppRosm")</span></span></code></pre></div>
-<p>The package will detect the presence of the library and notify you if it doesn’t see it. Once the library is installed, you will need a OSM extract file, you can get one by manually exporting a selected area from <a href="openstreetmap.org">OSM</a>, or for bigger areas, the best approach is to download a <a href="https://download.geofabrik.de" class="external-link">geofabrick</a> extract.</p>
+<!-- The package will detect the presence of the library and notify you if it doesn't see it. -->
+<p>Once the library is installed, you will need a OSM extract file, you can get one by manually exporting a selected area from <a href="openstreetmap.org">OSM</a>, or for bigger areas, the best approach is to download a <a href="https://download.geofabrik.de" class="external-link">geofabrick</a> extract.</p>
 </div>
 <div class="section level2">
 <h2 id="notes">Notes<a class="anchor" aria-label="anchor" href="#notes"></a>
 </h2>
-<p>This is a early stage development package that could develop more functionalities for integrating the extremely performant <strong>osmium</strong> library with a user friendly R workflow. The choice has been made for graph data, to first export it to <em>.csv</em> files and only after reading it into R. This is to avoid potentially creating files that are to big to be handled by the R environment, while still extracting the data. However, this process can fail sometimes, resulting in loss of unsaved data in the active R environment. Best practices and the optimal workflows are covered in a separate vignette.</p>
+<p>This is a early stage development package that could develop more functionalities for integrating the extremely performant <strong>osmium</strong> library with a user friendly R workflow. The choice has been made for graph data to first export it to <em>.csv</em> files and only after reading it into R. This is to avoid potentially creating files that are to big to be handled by the R environment, while still extracting the data. However, this process can fail sometimes, resulting in loss of unsaved data in the active R environment. Best practices and the optimal workflows are covered in a separate vignette.</p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<p>There are a few great packages for working with OSM data, they all provide a wide set of functionalities. If the size of your data is not excessive, like small city-village scale, <code>osmdata</code> might be your tool of choice in R. If the data gets bigger, <code>osmextract</code> could be the right choice. This package aims to be both user friendly and flexible, but also high performing.</p>
+<p>There are a few great packages for working with OSM data, they all provide a wide set of functionalities. If the size of your data is not excessive, like small city/village scale, <code>osmdata</code> might be your tool of choice in R. If the data gets bigger, <code>osmextract</code> could be the right choice. This package aims to be both user friendly and flexible, but also high performing.</p>
 <table class="table">
 <colgroup>
 <col width="6%">

@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   data_schema: data_schema.html
   road_networks: road_networks.html
-last_built: 2024-10-02T17:21Z
+last_built: 2024-10-31T18:48Z
 urls:
   reference: https://ischlo.github.io/cppRosm/reference
   article: https://ischlo.github.io/cppRosm/articles
