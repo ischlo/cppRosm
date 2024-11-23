@@ -11,13 +11,14 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // cpp_extract_graph
-int cpp_extract_graph(const std::string& file);
-RcppExport SEXP _cppRosm_cpp_extract_graph(SEXP fileSEXP) {
+int cpp_extract_graph(const std::string& file, const std::string& out);
+RcppExport SEXP _cppRosm_cpp_extract_graph(SEXP fileSEXP, SEXP outSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::string& >::type file(fileSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_extract_graph(file));
+    Rcpp::traits::input_parameter< const std::string& >::type out(outSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_extract_graph(file, out));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -35,7 +36,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_cppRosm_cpp_extract_graph", (DL_FUNC) &_cppRosm_cpp_extract_graph, 1},
+    {"_cppRosm_cpp_extract_graph", (DL_FUNC) &_cppRosm_cpp_extract_graph, 2},
     {"_cppRosm_cpp_extract_data", (DL_FUNC) &_cppRosm_cpp_extract_data, 2},
     {NULL, NULL, 0}
 };

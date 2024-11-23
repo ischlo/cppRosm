@@ -23,7 +23,6 @@ new_cppRnet_dt <- function(dt = data.frame()){
 }
 
 
-
 validate_cppRnet_dt <- function(dt=data.frame()){
   stopifnot(
     # these columns must be there 

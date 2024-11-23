@@ -43,7 +43,11 @@ double numeric_vector_mean(Rcpp::NumericVector vec){
 class RoadSegmentExtractor : public osmium::handler::Handler {
 public:
   
-  RoadSegmentExtractor(){
+  RoadSegmentExtractor(const std::string& out){
+    
+    segment_csv = std::ofstream(out + "road_segments.csv");
+    node_csv = std::ofstream(out + "nodes.csv");
+    
     segment_csv << "from," << "to," << "length," << "highway" << "\n";
     node_csv << "id," << "lon," << "lat"<<"\n";
   };
@@ -153,8 +157,10 @@ private:
   // Rcpp::CharacterVector from, to, id, highway_key;
   // Rcpp::NumericVector lat,lon,length;
   
-  std::ofstream segment_csv{"road_segments.csv"};
-  std::ofstream node_csv{"nodes.csv"};
+  std::ofstream segment_csv;
+  // {"road_segments.csv"};
+  std::ofstream node_csv;
+  // {"nodes.csv"};
   
 };
 
@@ -325,7 +331,7 @@ private:
 
 //@export
 // [[Rcpp::export]]
-int cpp_extract_graph(const std::string& file){
+int cpp_extract_graph(const std::string& file, const std::string& out = ""){
   
   // Rcpp::List 
   
@@ -342,7 +348,7 @@ int cpp_extract_graph(const std::string& file){
   
   Reader input_file_reader(input_file);
   
-  RoadSegmentExtractor handler;
+  RoadSegmentExtractor handler(out);
   
   // Apply the handler to the input file
   apply(input_file_reader, location_handler, handler);

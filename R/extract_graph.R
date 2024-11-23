@@ -6,6 +6,7 @@
 #'files, one with nodes and their coordinates, with with segments and optional values. 
 #'
 #'@param filename a local osm extract file with .osm or .osm.pbf extension.
+#'@param out a local osm extract file with .osm or .osm.pbf extension.
 #'
 # local_osm_filename <- system.file("extdata",'map.osm', package = "cppRosm")
 #
@@ -15,20 +16,16 @@
 #' It writes out 2 files containing nodes and segments. The files are written in the current directory and are called:
 #' `nodes.csv`,`road_segments.csv`.
 #'@export
-extract_graph <- function(filename){
+extract_graph <- function(filename,out = NULL){
   
   # assert_tool_is_installed('osmium')
+  out <- ifelse(is.null(out),"",out)
   
-  f_names <- c('nodes.csv','road_segments.csv')
+  f_names <- paste(out,c('nodes.csv','road_segments.csv'))
   
   if(any(sapply(f_names,file.exists))) stop('Filenames `nodes.csv` or `road_segments.csv` exist, please rename or remove.')
   
-  cat('Files will be written to: ',getwd(),'\n')
+  cli::cli_alert_info('Files will be written to: ',getwd(),'\n')
   
-  # graph_data <- cpp_extract_graph(filename)
-  # graph_data <- lapply(graph_data,data.table::as.data.table)
-  # graph_data$nodes <- graph_data$nodes[!duplicated(graph_data$nodes$id),]
-  # return(graph_data)
-  
-  cpp_extract_graph(filename)
+  cpp_extract_graph(filename,out)
 }
