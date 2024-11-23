@@ -4,10 +4,12 @@
 \alias{extract_graph}
 \title{Extracting road graphs from OSM}
 \usage{
-extract_graph(filename)
+extract_graph(filename, out = NULL)
 }
 \arguments{
 \item{filename}{a local osm extract file with .osm or .osm.pbf extension.}
+
+\item{out}{a local osm extract file with .osm or .osm.pbf extension.}
 }
 \value{
 this function returns the value 1 to the R environment when it's completed.

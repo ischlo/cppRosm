@@ -19,7 +19,7 @@ with named key=value pairs of the secondary osm tags.
 Getting non-network data from raw osm files.
 }
 \examples{
-local_osm_filename <- system.file("extdata",'map.osm', package = "cppRosm")
+local_osm_filename <- system.file("extdata",'monaco-latest.osm.pbf', package = "cppRosm")
 
 data <- cppRosm::extract_data(local_osm_filename)
 head(data)

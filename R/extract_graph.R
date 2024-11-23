@@ -8,7 +8,7 @@
 #'@param filename a local osm extract file with .osm or .osm.pbf extension.
 #'@param out a local osm extract file with .osm or .osm.pbf extension.
 #'
-# local_osm_filename <- system.file("extdata",'map.osm', package = "cppRosm")
+# local_osm_filename <- system.file("extdata",'monaco-latest.osm.pbf', package = "cppRosm")
 #
 # cppRosm::extract_graph(local_osm_filename)
 #'

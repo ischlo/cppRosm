@@ -8,7 +8,7 @@
 #'@param complete bool. TRUE to reconstruct Polygons, else use just points.
 #'@param cores integer. Run the computation on multiple cores using `parallel`.
 #'@examples
-#'cpprnet_filepath <- system.file(package = 'cppRosm','extdata','map.osm')
+#'cpprnet_filepath <- system.file(package = 'cppRosm','extdata','monaco-latest.osm.pbf')
 #'cpprnet_dt <- cppRosm::extract_data(filename = cpprnet_filepath)
 #'
 #'cppRosm::construct_geom(cpprnet_dt,complete=TRUE)
@@ -23,7 +23,9 @@ construct_geom <- function(cpprnet_dt
                            ,cores = 1){
   
   stopifnot("attrs"%in% colnames(cpprnet_dt))
-
+  
+  attrs <- lon <- lat <- NULL
+  
   if(complete){
     
     geometry <- rep_len(NA,nrow(cpprnet_dt))

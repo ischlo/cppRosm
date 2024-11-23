@@ -14,7 +14,7 @@
 #'
 #'@examples
 #'
-#'test_file <- system.file(package = 'cppRosm','extdata','map.osm')
+#'test_file <- system.file(package = 'cppRosm','extdata','monaco-latest.osm.pbf')
 #'data <- cppRosm::extract_data(test_file)
 #'
 #'
@@ -35,6 +35,7 @@ filter_sec <- function(data,keys,cores=1){
                                      ,FUN=\(attr){
                                       any(mapply(attr[names(keys)],keys,FUN=\(x,y) any(grepl(x=x,pattern=paste(y,collapse = "|"),ignore.case=TRUE))))
                                      })
+    attrs <- NULL
     
     data[keys_found,attrs]
     

@@ -21,7 +21,7 @@ are looked for.
 }
 \examples{
 
-test_file <- system.file(package = 'cppRosm','extdata','map.osm')
+test_file <- system.file(package = 'cppRosm','extdata','monaco-latest.osm.pbf')
 data <- cppRosm::extract_data(test_file)
 
 

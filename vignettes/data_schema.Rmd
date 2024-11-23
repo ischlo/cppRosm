@@ -90,7 +90,7 @@ By default, only tags with keys $amenity,shop,tourism$ will be extracted.
 library(cppRosm)
 library(sf)
 
-test_file <- system.file(package = 'cppRosm','extdata','map.osm')
+test_file <- system.file(package = 'cppRosm','extdata','monaco-latest.osm.pbf')
 
 data <- cppRosm::extract_data(test_file)
 

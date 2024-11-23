@@ -56,7 +56,7 @@ Once the package and dependencies are installed, the workflow is the following:
 library(cppRosm)
 ## basic example code
 
-file <- system.file(package = 'cppRosm','extdata',"map.osm") # path to a local file 
+file <- system.file(package = 'cppRosm','extdata',"monaco-latest.osm.pbf") # path to a local file 
 
 cppRosm::extract_graph(file)
 
@@ -94,7 +94,7 @@ The main source of failure of the low level code is the presence of incomplete w
 The recommended tool to use, is filtering a wider area with the `rosmium` package in the following way: 
 ```{r, eval=FALSE}
 rosmium::extract(
-  input_path = ".../map.osm"
+  input_path = ".../monaco-latest.osm.pbf"
   ,extent = sf::st_bbox() # a bbox
   ,output_path = ".../smaller_map.osm"
   ,strategy = "complete_ways" # !!! important

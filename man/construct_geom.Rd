@@ -21,7 +21,7 @@ Full geometries typically contain polygons and points.
 From a cppRosm data table, make the geometries.
 }
 \examples{
-cpprnet_filepath <- system.file(package = 'cppRosm','extdata','map.osm')
+cpprnet_filepath <- system.file(package = 'cppRosm','extdata','monaco-latest.osm.pbf')
 cpprnet_dt <- cppRosm::extract_data(filename = cpprnet_filepath)
 
 cppRosm::construct_geom(cpprnet_dt,complete=TRUE)
