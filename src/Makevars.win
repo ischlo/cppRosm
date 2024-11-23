@@ -4,6 +4,8 @@
 PKG_CPPFLAGS = -Iprotozero/include -Ilibosmium/include
 # PKG_LIBS = protozero/libprotozero.a libsomium/libosmium.a 
 
+PKG_LIBS = -lexpat
+
 $(SHLIB): protozero libosmium
 
 protozero:
