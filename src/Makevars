@@ -1,10 +1,10 @@
 # PKG_CPPFLAGS = -I/opt/homebrew/Cellar/libosmium/2.20.0/libexec/include -I/opt/homebrew/Cellar/libosmium/2.20.0/include
 # PKG_LIBS = -L/opt/homebrew/Cellar/libosmium/2.20.0 -lexpat -pthread -lz
 
-PKG_CPPFLAGS = -Ilibosmium/include -Iprotozero/include
+PKG_CPPFLAGS = -Iprotozero/include -Ilibosmium/include
 # PKG_LIBS = protozero/libprotozero.a libsomium/libosmium.a 
 
-$(SHLIB): libosmium protozero
+$(SHLIB): protozero libosmium
 
 protozero:
 	(cd protozero; \
