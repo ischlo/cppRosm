@@ -1,6 +1,6 @@
 Package: cppRosm
 Title: Fast en Efficient OSM Data in R
-Version: 1.0.0
+Version: 1.1.0
 Authors@R: 
     person("Ivann", "Schlosser", , "schlosserivann@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "https://orcid.org/0009-0004-4099-3198"))
